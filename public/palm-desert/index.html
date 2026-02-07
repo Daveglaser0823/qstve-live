@@ -13,112 +13,58 @@
       color: #e0e0e0;
       min-height: 100vh;
     }
-    .container { max-width: 600px; margin: 0 auto; padding: 1rem; padding-bottom: 80px; }
+    .container { max-width: 800px; margin: 0 auto; padding: 1rem; padding-bottom: 80px; }
     
-    /* Password Gate */
     #gate {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 80vh;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 80vh; text-align: center;
     }
     #gate h1 { font-size: 3rem; margin-bottom: 1rem; }
     #gate p { color: #888; margin-bottom: 2rem; }
     #gate input {
-      padding: 1rem 2rem;
-      font-size: 1.5rem;
-      border: 2px solid #333;
-      border-radius: 12px;
-      background: #222;
-      color: #fff;
-      text-align: center;
-      width: 200px;
-      letter-spacing: 0.5rem;
+      padding: 1rem 2rem; font-size: 1.5rem; border: 2px solid #333; border-radius: 12px;
+      background: #222; color: #fff; text-align: center; width: 200px; letter-spacing: 0.5rem;
     }
     #gate input:focus { outline: none; border-color: #f0c040; }
     #gate .error { color: #f87171; margin-top: 1rem; display: none; }
     
-    /* Main Content */
     #content { display: none; }
-    .header {
-      text-align: center;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid #333;
-      margin-bottom: 1rem;
-    }
+    .header { text-align: center; padding: 1.5rem 0; border-bottom: 1px solid #333; margin-bottom: 1rem; }
     .header h1 { font-size: 1.6rem; color: #f0c040; }
     .header .dates { color: #888; margin-top: 0.3rem; font-size: 0.9rem; }
     
-    /* Tabs */
     .tabs {
-      display: flex;
-      gap: 0.3rem;
-      background: #111;
-      padding: 0.5rem;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-      overflow-x: auto;
+      display: flex; gap: 0.25rem; background: #111; padding: 0.4rem; border-radius: 12px;
+      margin-bottom: 1rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .tab {
-      flex: 1;
-      min-width: 60px;
-      padding: 0.6rem 0.4rem;
-      background: transparent;
-      border: none;
-      color: #888;
-      font-size: 0.75rem;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
+      flex-shrink: 0; padding: 0.5rem 0.6rem; background: transparent; border: none; color: #888;
+      font-size: 0.7rem; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; gap: 0.15rem;
     }
     .tab.active { background: #333; color: #f0c040; }
-    .tab .emoji { font-size: 1.2rem; }
+    .tab .emoji { font-size: 1.1rem; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     
-    .section {
-      background: #1e1e2e;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
+    .section { background: #1e1e2e; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
     .section-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888;
+      margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;
     }
     
-    .event-item {
-      padding: 0.7rem 0;
-      border-bottom: 1px solid #333;
-    }
+    .event-item { padding: 0.6rem 0; border-bottom: 1px solid #333; }
     .event-item:last-child { border-bottom: none; }
     .event-date { font-size: 0.7rem; color: #888; }
-    .event-title { font-weight: 600; margin: 0.2rem 0; font-size: 0.95rem; }
+    .event-title { font-weight: 600; margin: 0.2rem 0; font-size: 0.9rem; }
     .event-details { font-size: 0.8rem; color: #aaa; }
-    .event-location { font-size: 0.75rem; color: #888; margin-top: 0.3rem; }
-    .event-location a { color: #f0c040; text-decoration: none; }
+    .event-links { font-size: 0.75rem; margin-top: 0.3rem; }
+    .event-links a { color: #f0c040; text-decoration: none; margin-right: 0.75rem; }
     
-    .superbowl {
-      background: linear-gradient(135deg, #1a472a 0%, #0f2d1a 100%);
-      border: 1px solid #2d5a3d;
-    }
+    .superbowl { background: linear-gradient(135deg, #1a472a 0%, #0f2d1a 100%); border: 1px solid #2d5a3d; }
     .superbowl .event-title { color: #4ade80; }
     
-    .couple-card {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #333;
-    }
+    .couple-card { padding: 0.5rem 0; border-bottom: 1px solid #333; }
     .couple-card:last-child { border-bottom: none; }
     .couple-names { font-weight: 600; font-size: 0.9rem; }
     .couple-flight { font-size: 0.75rem; color: #888; margin-top: 0.2rem; }
@@ -130,76 +76,38 @@
     .property-link { margin-top: 0.5rem; }
     .property-link a { color: #f0c040; text-decoration: none; font-size: 0.85rem; }
     
-    /* Checklist */
     .checklist-category { margin-bottom: 1rem; }
-    .checklist-category:last-child { margin-bottom: 0; }
-    .category-header {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #f0c040;
-      margin-bottom: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-    }
+    .category-header { font-size: 0.8rem; font-weight: 600; color: #f0c040; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
     .category-count { color: #888; font-weight: normal; }
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid #222;
-      font-size: 0.85rem;
-    }
+    .check-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid #222; font-size: 0.85rem; }
     .check-item:last-child { border-bottom: none; }
-    .check-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: #4ade80;
-    }
+    .check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4ade80; }
     .check-item.checked label { color: #666; text-decoration: line-through; }
     
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.6rem;
+    .place-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+    @media (min-width: 600px) { .place-grid { grid-template-columns: repeat(2, 1fr); } }
+    .place-card { background: #262636; border-radius: 10px; padding: 0.8rem; }
+    .place-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+    .place-emoji { font-size: 1.3rem; }
+    .place-name { font-weight: 600; font-size: 0.85rem; }
+    .place-desc { font-size: 0.7rem; color: #888; }
+    .place-links { display: flex; gap: 0.5rem; margin-top: 0.4rem; }
+    .place-links a {
+      font-size: 0.7rem; padding: 0.25rem 0.5rem; background: #1e1e2e; border-radius: 4px;
+      color: #e0e0e0; text-decoration: none;
     }
-    .link-card {
-      background: #333;
-      padding: 0.8rem;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      color: #e0e0e0;
-    }
+    .place-links a:hover { background: rgba(240,192,64,0.2); }
+    
+    .links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .link-card { background: #333; padding: 0.8rem; border-radius: 8px; text-align: center; text-decoration: none; color: #e0e0e0; }
     .link-card .emoji { font-size: 1.3rem; }
     .link-card .label { font-size: 0.75rem; margin-top: 0.2rem; }
     
-    .footer {
-      text-align: center;
-      padding: 1.5rem;
-      color: #555;
-      font-size: 0.7rem;
-    }
-    
-    /* Bottom Nav */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111;
-      border-top: 1px solid #333;
-      display: none;
-      justify-content: space-around;
-      padding: 0.5rem;
-    }
-    #content:not([style*="none"]) ~ .bottom-nav,
-    .bottom-nav.show { display: flex; }
+    .footer { text-align: center; padding: 1.5rem; color: #555; font-size: 0.7rem; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Password Gate -->
     <div id="gate">
       <h1>🌴</h1>
       <p>Palm Desert Getaway</p>
@@ -207,24 +115,22 @@
       <p class="error" id="error">Wrong PIN</p>
     </div>
     
-    <!-- Main Content -->
     <div id="content">
       <div class="header">
         <h1>🌴 Palm Desert Getaway</h1>
         <div class="dates">Feb 8-12, 2026 • Villa Bella</div>
       </div>
       
-      <!-- Tabs -->
       <div class="tabs">
         <button class="tab active" data-tab="schedule"><span class="emoji">📅</span>Schedule</button>
         <button class="tab" data-tab="packing"><span class="emoji">🧳</span>Packing</button>
         <button class="tab" data-tab="groceries"><span class="emoji">🛒</span>Groceries</button>
+        <button class="tab" data-tab="explore"><span class="emoji">🧭</span>Explore</button>
         <button class="tab" data-tab="info"><span class="emoji">ℹ️</span>Info</button>
       </div>
       
       <!-- SCHEDULE TAB -->
       <div class="tab-content active" id="schedule">
-        <!-- Super Bowl -->
         <div class="section superbowl">
           <div class="event-item" style="border:none; padding:0;">
             <div class="event-date">Sunday, Feb 8 • 3:30 PM PT</div>
@@ -233,15 +139,14 @@
           </div>
         </div>
         
-        <!-- Golf -->
         <div class="section">
           <div class="section-title">⛳ Golf Schedule</div>
           <div class="event-item">
             <div class="event-date">Monday, Feb 9 • 8:15 AM</div>
             <div class="event-title">Mountain View</div>
             <div class="event-details">Desert Willow Golf Resort</div>
-            <div class="event-location">
-              <a href="https://maps.apple.com/?q=Desert+Willow+Golf+Resort+Palm+Desert" target="_blank">📍 Map</a> • 
+            <div class="event-links">
+              <a href="https://maps.apple.com/?q=Desert+Willow+Golf+Resort+Palm+Desert" target="_blank">📍 Map</a>
               <a href="https://www.desertwillow.com" target="_blank">🔗 Website</a>
             </div>
           </div>
@@ -249,8 +154,8 @@
             <div class="event-date">Tuesday, Feb 10 • 8:42 AM</div>
             <div class="event-title">PGA West Pete Dye</div>
             <div class="event-details">PGA West</div>
-            <div class="event-location">
-              <a href="https://maps.apple.com/?q=PGA+West+La+Quinta" target="_blank">📍 Map</a> • 
+            <div class="event-links">
+              <a href="https://maps.apple.com/?q=PGA+West+La+Quinta" target="_blank">📍 Map</a>
               <a href="https://www.pgawest.com" target="_blank">🔗 Website</a>
             </div>
           </div>
@@ -258,32 +163,19 @@
             <div class="event-date">Wednesday, Feb 11 • 1:50 PM</div>
             <div class="event-title">Fire Cliff</div>
             <div class="event-details">Desert Willow Golf Resort</div>
-            <div class="event-location">
-              <a href="https://maps.apple.com/?q=Desert+Willow+Golf+Resort+Palm+Desert" target="_blank">📍 Map</a> • 
+            <div class="event-links">
+              <a href="https://maps.apple.com/?q=Desert+Willow+Golf+Resort+Palm+Desert" target="_blank">📍 Map</a>
               <a href="https://www.desertwillow.com" target="_blank">🔗 Website</a>
             </div>
           </div>
         </div>
         
-        <!-- Flights -->
         <div class="section">
           <div class="section-title">✈️ Arrivals - Sunday Feb 8</div>
-          <div class="couple-card">
-            <div class="couple-names">Dave & Denise</div>
-            <div class="couple-flight">SAV → ATL → PSP (DL1702/DL349) • 12:19 PM PT</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Mike & Jana</div>
-            <div class="couple-flight">HSV → ATL → PSP • 12:19 PM PT</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Chris & Sarah</div>
-            <div class="couple-flight">DEN → PSP (UA1294) • 12:41 PM PT</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Chris R & Sharon</div>
-            <div class="couple-flight">ATL → PSP (DL349) • 12:19 PM PT</div>
-          </div>
+          <div class="couple-card"><div class="couple-names">Dave & Denise</div><div class="couple-flight">SAV → ATL → PSP (DL1702/DL349) • 12:19 PM PT</div></div>
+          <div class="couple-card"><div class="couple-names">Mike & Jana</div><div class="couple-flight">HSV → ATL → PSP • 12:19 PM PT</div></div>
+          <div class="couple-card"><div class="couple-names">Chris & Sarah</div><div class="couple-flight">DEN → PSP (UA1294) • 12:41 PM PT</div></div>
+          <div class="couple-card"><div class="couple-names">Chris R & Sharon</div><div class="couple-flight">ATL → PSP (DL349) • 12:19 PM PT</div></div>
         </div>
       </div>
       
@@ -291,9 +183,7 @@
       <div class="tab-content" id="packing">
         <div class="section">
           <div class="section-title">🧳 Packing Checklist</div>
-          
-          <div class="checklist-category" data-category="Golf">
-            <div class="category-header">⛳ Golf <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">⛳ Golf <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="p1"><label for="p1">Golf clubs</label></div>
             <div class="check-item"><input type="checkbox" id="p2"><label for="p2">Golf shoes</label></div>
             <div class="check-item"><input type="checkbox" id="p3"><label for="p3">Golf glove</label></div>
@@ -301,9 +191,7 @@
             <div class="check-item"><input type="checkbox" id="p5"><label for="p5">Range finder</label></div>
             <div class="check-item"><input type="checkbox" id="p6"><label for="p6">Golf hat/visor</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Clothing">
-            <div class="category-header">👕 Clothing <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">👕 Clothing <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="p7"><label for="p7">Golf polos (3-4)</label></div>
             <div class="check-item"><input type="checkbox" id="p8"><label for="p8">Golf shorts/pants</label></div>
             <div class="check-item"><input type="checkbox" id="p9"><label for="p9">Casual dinner outfits</label></div>
@@ -311,23 +199,17 @@
             <div class="check-item"><input type="checkbox" id="p11"><label for="p11">Sunglasses</label></div>
             <div class="check-item"><input type="checkbox" id="p12"><label for="p12">Light jacket</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Tech">
-            <div class="category-header">📱 Tech <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">📱 Tech <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="p13"><label for="p13">Phone charger</label></div>
             <div class="check-item"><input type="checkbox" id="p14"><label for="p14">Camera</label></div>
             <div class="check-item"><input type="checkbox" id="p15"><label for="p15">Headphones</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Toiletries">
-            <div class="category-header">🧴 Toiletries <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">🧴 Toiletries <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="p16"><label for="p16">Sunscreen SPF 50+</label></div>
             <div class="check-item"><input type="checkbox" id="p17"><label for="p17">Medications</label></div>
             <div class="check-item"><input type="checkbox" id="p18"><label for="p18">Lip balm w/ SPF</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Documents">
-            <div class="category-header">📄 Documents <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">📄 Documents <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="p19"><label for="p19">ID/License</label></div>
             <div class="check-item"><input type="checkbox" id="p20"><label for="p20">Credit cards</label></div>
             <div class="check-item"><input type="checkbox" id="p21"><label for="p21">Flight confirmation</label></div>
@@ -339,125 +221,123 @@
       <div class="tab-content" id="groceries">
         <div class="section">
           <div class="section-title">🛒 Grocery List</div>
-          
-          <div class="checklist-category" data-category="Dairy">
-            <div class="category-header">🥛 Dairy <span class="category-count"></span></div>
+          <div class="checklist-category"><div class="category-header">🥛 Dairy <span class="category-count"></span></div>
             <div class="check-item"><input type="checkbox" id="g1"><label for="g1">Eggs x2</label></div>
             <div class="check-item"><input type="checkbox" id="g2"><label for="g2">Plain yogurt</label></div>
-            <div class="check-item"><input type="checkbox" id="g3"><label for="g3">Greek yogurt vanilla/berry Siggi's</label></div>
-            <div class="check-item"><input type="checkbox" id="g4"><label for="g4">Greek yogurt D&D</label></div>
-            <div class="check-item"><input type="checkbox" id="g5"><label for="g5">Half-and-half</label></div>
-            <div class="check-item"><input type="checkbox" id="g6"><label for="g6">Cream</label></div>
-            <div class="check-item"><input type="checkbox" id="g7"><label for="g7">Cream cheese x2</label></div>
-            <div class="check-item"><input type="checkbox" id="g8"><label for="g8">Milk</label></div>
+            <div class="check-item"><input type="checkbox" id="g3"><label for="g3">Greek yogurt Siggi's</label></div>
+            <div class="check-item"><input type="checkbox" id="g4"><label for="g4">Half-and-half</label></div>
+            <div class="check-item"><input type="checkbox" id="g5"><label for="g5">Cream cheese x2</label></div>
+            <div class="check-item"><input type="checkbox" id="g6"><label for="g6">Milk</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Bakery">
-            <div class="category-header">🥯 Bakery <span class="category-count"></span></div>
-            <div class="check-item"><input type="checkbox" id="g9"><label for="g9">Cinnamon raisin bagels</label></div>
-            <div class="check-item"><input type="checkbox" id="g10"><label for="g10">Granola</label></div>
-            <div class="check-item"><input type="checkbox" id="g11"><label for="g11">Lundberg rice cakes</label></div>
-            <div class="check-item"><input type="checkbox" id="g12"><label for="g12">GF crackers</label></div>
+          <div class="checklist-category"><div class="category-header">🥯 Bakery <span class="category-count"></span></div>
+            <div class="check-item"><input type="checkbox" id="g7"><label for="g7">Cinnamon raisin bagels</label></div>
+            <div class="check-item"><input type="checkbox" id="g8"><label for="g8">Granola</label></div>
+            <div class="check-item"><input type="checkbox" id="g9"><label for="g9">GF crackers</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Produce">
-            <div class="category-header">🥬 Produce <span class="category-count"></span></div>
-            <div class="check-item"><input type="checkbox" id="g13"><label for="g13">Blueberries</label></div>
-            <div class="check-item"><input type="checkbox" id="g14"><label for="g14">Berries</label></div>
-            <div class="check-item"><input type="checkbox" id="g15"><label for="g15">Grapes</label></div>
-            <div class="check-item"><input type="checkbox" id="g16"><label for="g16">Pineapple</label></div>
-            <div class="check-item"><input type="checkbox" id="g17"><label for="g17">2 red grapefruit</label></div>
-            <div class="check-item"><input type="checkbox" id="g18"><label for="g18">2 navel oranges</label></div>
-            <div class="check-item"><input type="checkbox" id="g19"><label for="g19">Bananas</label></div>
-            <div class="check-item"><input type="checkbox" id="g20"><label for="g20">Avocados</label></div>
-            <div class="check-item"><input type="checkbox" id="g21"><label for="g21">Cherry tomatoes</label></div>
-            <div class="check-item"><input type="checkbox" id="g22"><label for="g22">Salad fixings</label></div>
+          <div class="checklist-category"><div class="category-header">🥬 Produce <span class="category-count"></span></div>
+            <div class="check-item"><input type="checkbox" id="g10"><label for="g10">Blueberries</label></div>
+            <div class="check-item"><input type="checkbox" id="g11"><label for="g11">Grapes</label></div>
+            <div class="check-item"><input type="checkbox" id="g12"><label for="g12">Pineapple</label></div>
+            <div class="check-item"><input type="checkbox" id="g13"><label for="g13">Bananas</label></div>
+            <div class="check-item"><input type="checkbox" id="g14"><label for="g14">Avocados</label></div>
+            <div class="check-item"><input type="checkbox" id="g15"><label for="g15">Salad fixings</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Deli">
-            <div class="category-header">🥪 Deli <span class="category-count"></span></div>
-            <div class="check-item"><input type="checkbox" id="g23"><label for="g23">Boar's Head sliced turkey</label></div>
+          <div class="checklist-category"><div class="category-header">☕ Drinks <span class="category-count"></span></div>
+            <div class="check-item"><input type="checkbox" id="g16"><label for="g16">Coffee</label></div>
+            <div class="check-item"><input type="checkbox" id="g17"><label for="g17">Stevia</label></div>
+            <div class="check-item"><input type="checkbox" id="g18"><label for="g18">Pineapple juice</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Drinks">
-            <div class="category-header">☕ Drinks <span class="category-count"></span></div>
-            <div class="check-item"><input type="checkbox" id="g24"><label for="g24">Coffee</label></div>
-            <div class="check-item"><input type="checkbox" id="g25"><label for="g25">Stevia</label></div>
-            <div class="check-item"><input type="checkbox" id="g26"><label for="g26">Pineapple juice</label></div>
+          <div class="checklist-category"><div class="category-header">🍪 Snacks <span class="category-count"></span></div>
+            <div class="check-item"><input type="checkbox" id="g19"><label for="g19">Doritos</label></div>
+            <div class="check-item"><input type="checkbox" id="g20"><label for="g20">Double Stuff Oreos</label></div>
+            <div class="check-item"><input type="checkbox" id="g21"><label for="g21">Cookie dough ice cream</label></div>
           </div>
-          
-          <div class="checklist-category" data-category="Snacks">
-            <div class="category-header">🍪 Snacks <span class="category-count"></span></div>
-            <div class="check-item"><input type="checkbox" id="g27"><label for="g27">Doritos</label></div>
-            <div class="check-item"><input type="checkbox" id="g28"><label for="g28">Double Stuff Oreos</label></div>
-            <div class="check-item"><input type="checkbox" id="g29"><label for="g29">GF chips & cheese</label></div>
-            <div class="check-item"><input type="checkbox" id="g30"><label for="g30">Cookie dough ice cream</label></div>
+        </div>
+      </div>
+      
+      <!-- EXPLORE TAB -->
+      <div class="tab-content" id="explore">
+        <div class="section">
+          <div class="section-title">☕ Cafes & Coffee</div>
+          <div class="place-grid">
+            <div class="place-card"><div class="place-header"><span class="place-emoji">☕</span><div><div class="place-name">Koffi</div><div class="place-desc">Local favorite</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Koffi+Palm+Springs" target="_blank">📍 Map</a><a href="https://www.kfrench.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">☕</span><div><div class="place-name">Ernest Coffee</div><div class="place-desc">Third wave</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Ernest+Coffee+Palm+Springs" target="_blank">📍 Map</a><a href="https://www.ernestcoffee.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🥞</span><div><div class="place-name">Wilma & Frieda's</div><div class="place-desc">Breakfast cafe</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Wilma+Friedas+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.wilmaandfrieda.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🥯</span><div><div class="place-name">Sherman's Deli</div><div class="place-desc">Classic deli</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Shermans+Deli+Palm+Springs" target="_blank">📍 Map</a><a href="https://www.shermansdeli.com" target="_blank">🔗 Site</a></div></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">🍽️ Dining & Entertainment</div>
+          <div class="place-grid">
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🎨</span><div><div class="place-name">El Paseo</div><div class="place-desc">Art & dining district</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=El+Paseo+Palm+Desert+CA" target="_blank">📍 Map</a><a href="https://www.elpaseo.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🦞</span><div><div class="place-name">Pacifica Seafood</div><div class="place-desc">Upscale seafood</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Pacifica+Seafood+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.pacificaseafood.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🌴</span><div><div class="place-name">Tommy Bahama</div><div class="place-desc">Island vibes</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Tommy+Bahama+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.tommybahama.com/restaurants" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🥩</span><div><div class="place-name">Mastro's</div><div class="place-desc">Steakhouse</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Mastros+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.mastrosrestaurants.com" target="_blank">🔗 Site</a></div></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">🥾 Hikes & Outdoors</div>
+          <div class="place-grid">
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🏜️</span><div><div class="place-name">Indian Canyons</div><div class="place-desc">Palm oasis trails</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Indian+Canyons+Palm+Springs" target="_blank">📍 Map</a><a href="https://www.indian-canyons.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">💧</span><div><div class="place-name">Tahquitz Canyon</div><div class="place-desc">Waterfall hike</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Tahquitz+Canyon+Palm+Springs" target="_blank">📍 Map</a><a href="https://www.tahquitzcanyon.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">⛰️</span><div><div class="place-name">Bump and Grind</div><div class="place-desc">Popular hike</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Bump+and+Grind+Trail+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.alltrails.com/trail/us/california/bump-and-grind-trail" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🪜</span><div><div class="place-name">Ladder Canyon</div><div class="place-desc">Slot canyon adventure</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Ladder+Canyon+Mecca+CA" target="_blank">📍 Map</a><a href="https://www.alltrails.com/trail/us/california/ladder-canyon-and-big-painted-canyon" target="_blank">🔗 Site</a></div></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">🎯 Attractions</div>
+          <div class="place-grid">
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🦎</span><div><div class="place-name">The Living Desert</div><div class="place-desc">Zoo & gardens</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=The+Living+Desert+Zoo+Palm+Desert" target="_blank">📍 Map</a><a href="https://www.livingdesert.org" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🚡</span><div><div class="place-name">Aerial Tramway</div><div class="place-desc">Rotating tram</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Palm+Springs+Aerial+Tramway" target="_blank">📍 Map</a><a href="https://www.pstramway.com" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🌵</span><div><div class="place-name">Joshua Tree</div><div class="place-desc">1 hour away</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Joshua+Tree+National+Park" target="_blank">📍 Map</a><a href="https://www.nps.gov/jotr" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🏛️</span><div><div class="place-name">Sunnylands</div><div class="place-desc">Annenberg estate</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Sunnylands+Rancho+Mirage" target="_blank">📍 Map</a><a href="https://sunnylands.org" target="_blank">🔗 Site</a></div></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">🏛️ Museums</div>
+          <div class="place-grid">
+            <div class="place-card"><div class="place-header"><span class="place-emoji">🎨</span><div><div class="place-name">PS Art Museum</div><div class="place-desc">Modern art</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Palm+Springs+Art+Museum" target="_blank">📍 Map</a><a href="https://www.psmuseum.org" target="_blank">🔗 Site</a></div></div>
+            <div class="place-card"><div class="place-header"><span class="place-emoji">✈️</span><div><div class="place-name">Air Museum</div><div class="place-desc">WWII aircraft</div></div></div><div class="place-links"><a href="https://maps.apple.com/?q=Palm+Springs+Air+Museum" target="_blank">📍 Map</a><a href="https://www.palmspringsairmuseum.org" target="_blank">🔗 Site</a></div></div>
           </div>
         </div>
       </div>
       
       <!-- INFO TAB -->
       <div class="tab-content" id="info">
-        <!-- Property -->
         <div class="section">
           <div class="section-title">🏠 Our Villa</div>
           <div class="property-name">Villa Bella</div>
           <div class="property-details">6 BR • 4 BA • 4,575 sq ft</div>
           <div class="property-amenities">
-            <span class="amenity">🏊 Pool</span>
-            <span class="amenity">🛁 Hot Tub</span>
-            <span class="amenity">💪 Gym</span>
-            <span class="amenity">🎮 Game Room</span>
+            <span class="amenity">🏊 Pool</span><span class="amenity">🛁 Hot Tub</span><span class="amenity">💪 Gym</span><span class="amenity">🎮 Game Room</span>
           </div>
-          <div class="property-link">
-            <a href="https://www.vrbo.com/2744508" target="_blank">📍 View on VRBO →</a>
-          </div>
+          <div class="property-link"><a href="https://www.vrbo.com/2744508" target="_blank">📍 View on VRBO →</a></div>
         </div>
         
-        <!-- Couples -->
         <div class="section">
           <div class="section-title">👥 The Crew</div>
-          <div class="couple-card">
-            <div class="couple-names">Dave & Denise Glaser</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Mike & Jana Moody</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Chris & Sarah Ahn Moody</div>
-          </div>
-          <div class="couple-card">
-            <div class="couple-names">Chris Russell & Sharon Doviet</div>
-          </div>
+          <div class="couple-card"><div class="couple-names">Dave & Denise Glaser</div></div>
+          <div class="couple-card"><div class="couple-names">Mike & Jana Moody</div></div>
+          <div class="couple-card"><div class="couple-names">Chris & Sarah Ahn Moody</div></div>
+          <div class="couple-card"><div class="couple-names">Chris Russell & Sharon Doviet</div></div>
         </div>
         
-        <!-- Quick Links -->
         <div class="section">
           <div class="section-title">🔗 Quick Links</div>
           <div class="links-grid">
-            <a class="link-card" href="https://maps.apple.com/?q=Villa+Bella+Palm+Desert+CA" target="_blank">
-              <div class="emoji">🏠</div>
-              <div class="label">Villa</div>
-            </a>
-            <a class="link-card" href="https://weather.com/weather/tenday/l/Palm+Desert+CA" target="_blank">
-              <div class="emoji">🌤️</div>
-              <div class="label">Weather</div>
-            </a>
-            <a class="link-card" href="https://www.yelp.com/search?find_desc=Restaurants&find_loc=Palm+Desert%2C+CA" target="_blank">
-              <div class="emoji">🍽️</div>
-              <div class="label">Restaurants</div>
-            </a>
-            <a class="link-card" href="https://www.google.com/maps/search/grocery+stores+near+Palm+Desert+CA" target="_blank">
-              <div class="emoji">🛒</div>
-              <div class="label">Groceries</div>
-            </a>
+            <a class="link-card" href="https://maps.apple.com/?q=Villa+Bella+Palm+Desert+CA" target="_blank"><div class="emoji">🏠</div><div class="label">Villa</div></a>
+            <a class="link-card" href="https://weather.com/weather/tenday/l/Palm+Desert+CA" target="_blank"><div class="emoji">🌤️</div><div class="label">Weather</div></a>
+            <a class="link-card" href="https://www.yelp.com/search?find_desc=Restaurants&find_loc=Palm+Desert" target="_blank"><div class="emoji">🍽️</div><div class="label">Restaurants</div></a>
+            <a class="link-card" href="https://www.google.com/maps/search/grocery+stores+Palm+Desert" target="_blank"><div class="emoji">🛒</div><div class="label">Groceries</div></a>
           </div>
         </div>
       </div>
       
-      <div class="footer">
-        Made with ❤️ by Steve • Updated Feb 7, 2026
-      </div>
+      <div class="footer">Made with ❤️ by Steve • Updated Feb 7, 2026</div>
     </div>
   </div>
   
@@ -468,27 +348,15 @@
     const content = document.getElementById('content');
     const error = document.getElementById('error');
     
-    // Check if unlocked
-    if (localStorage.getItem('pd-unlocked') === 'true') {
-      gate.style.display = 'none';
-      content.style.display = 'block';
-    }
+    if (localStorage.getItem('pd-unlocked') === 'true') { gate.style.display = 'none'; content.style.display = 'block'; }
     
     input.addEventListener('input', function() {
       if (this.value.length === 4) {
-        if (this.value === PIN) {
-          localStorage.setItem('pd-unlocked', 'true');
-          gate.style.display = 'none';
-          content.style.display = 'block';
-        } else {
-          error.style.display = 'block';
-          this.value = '';
-          setTimeout(() => error.style.display = 'none', 2000);
-        }
+        if (this.value === PIN) { localStorage.setItem('pd-unlocked', 'true'); gate.style.display = 'none'; content.style.display = 'block'; }
+        else { error.style.display = 'block'; this.value = ''; setTimeout(() => error.style.display = 'none', 2000); }
       }
     });
     
-    // Tabs
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -498,15 +366,10 @@
       });
     });
     
-    // Checklists
     const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
     const saved = JSON.parse(localStorage.getItem('pd-checks') || '{}');
-    
     checkboxes.forEach(cb => {
-      if (saved[cb.id]) {
-        cb.checked = true;
-        cb.parentElement.classList.add('checked');
-      }
+      if (saved[cb.id]) { cb.checked = true; cb.parentElement.classList.add('checked'); }
       cb.addEventListener('change', () => {
         saved[cb.id] = cb.checked;
         localStorage.setItem('pd-checks', JSON.stringify(saved));
@@ -514,12 +377,11 @@
         updateCounts();
       });
     });
-    
     function updateCounts() {
       document.querySelectorAll('.checklist-category').forEach(cat => {
         const total = cat.querySelectorAll('input[type="checkbox"]').length;
         const checked = cat.querySelectorAll('input[type="checkbox"]:checked').length;
-        cat.querySelector('.category-count').textContent = `${checked}/${total}`;
+        cat.querySelector('.category-count').textContent = checked + '/' + total;
       });
     }
     updateCounts();

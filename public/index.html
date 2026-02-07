@@ -3,354 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trip Dashboard</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+  <title>qstve</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
   <style>
-    :root {
-      --bg-primary: #0a0a0f;
-      --bg-card: #12121a;
-      --bg-hover: #1a1a24;
-      --border-color: #2a2a3a;
-      --text-primary: #f0f0f0;
-      --text-secondary: #a0a0a0;
-      --text-muted: #606070;
-      --accent-gold: #f0c040;
-      --accent-orange: #e08030;
-    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      background: #0a0a0f;
+      color: #e0e0e0;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
+      text-align: center;
+      padding: 2rem;
     }
-    
-    /* Header */
-    .header {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: #f0c040;
+      margin-bottom: 2rem;
+    }
+    .links {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      padding-top: 1rem;
-      margin-bottom: 2rem;
+      max-width: 300px;
+      margin: 0 auto;
     }
-    @media (min-width: 768px) {
-      .header {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-    .header-title {
+    .link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-    }
-    .header-icon {
-      font-size: 2.25rem;
-    }
-    .header h1 {
-      font-size: 1.875rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .header p {
-      color: var(--text-muted);
-      font-size: 0.875rem;
-    }
-    
-    /* Section */
-    .section {
-      margin-bottom: 2rem;
-    }
-    .section-title {
-      font-size: 1.125rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .section-title .dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-      background: var(--accent-gold);
-    }
-    .section-title .icon {
-      font-size: 1.25rem;
-    }
-    
-    /* Trip Cards Grid */
-    .trips-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-    @media (min-width: 768px) {
-      .trips-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (min-width: 1024px) {
-      .trips-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    
-    /* Trip Card */
-    .trip-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 1.25rem;
+      padding: 1rem 1.5rem;
+      background: #161620;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      color: #e0e0e0;
       text-decoration: none;
-      color: inherit;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.2s;
     }
-    .trip-card:hover {
-      border-color: var(--accent-gold);
+    .link:hover {
+      border-color: #f0c040;
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(240, 192, 64, 0.1);
     }
-    .trip-card:hover .card-title {
-      color: var(--accent-gold);
-    }
-    .trip-card:hover .card-arrow {
-      opacity: 1;
-    }
-    
-    .card-status {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
-    .status-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .status-dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-    }
-    .status-dot.upcoming { background: var(--accent-gold); }
-    .status-dot.active { background: #4ade80; animation: pulse 2s infinite; }
-    .status-dot.past { background: var(--text-muted); }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    .status-label {
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-    .status-label.upcoming { color: var(--accent-gold); }
-    .status-label.active { color: #4ade80; }
-    .status-label.past { color: var(--text-muted); }
-    
-    .countdown-badge {
-      font-size: 0.75rem;
-      background: rgba(240, 192, 64, 0.15);
-      color: var(--accent-gold);
-      padding: 0.25rem 0.625rem;
-      border-radius: 9999px;
-      font-weight: 500;
-    }
-    
-    .card-main {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-    .card-emoji {
-      font-size: 1.875rem;
-    }
-    .card-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .card-title {
-      font-size: 1.125rem;
-      font-weight: 600;
-      transition: color 0.3s;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .card-location {
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-    
-    .card-details {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-    .card-details .sep {
-      color: var(--border-color);
-    }
-    
-    .card-footer {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border-color);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-    .card-cost {
-      margin-left: auto;
-      font-weight: 500;
-      color: var(--accent-gold);
-    }
-    
-    .card-arrow {
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      opacity: 0;
-      transition: opacity 0.3s;
-      font-size: 1.25rem;
-    }
-    
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 4rem 1rem;
-    }
-    .empty-state .emoji {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-    .empty-state h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-    .empty-state p {
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-    
+    .link .emoji { font-size: 1.5rem; }
+    .link .text { text-align: left; }
+    .link .title { font-weight: 600; font-size: 0.95rem; }
+    .link .desc { font-size: 0.75rem; color: #888; margin-top: 0.1rem; }
     .footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--text-muted);
-      font-size: 0.75rem;
+      margin-top: 3rem;
+      font-size: 0.7rem;
+      color: #444;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div class="header-title">
-        <span class="header-icon">🌍</span>
-        <div>
-          <h1>Trip Dashboard</h1>
-          <p>Plan, track, and relive your adventures</p>
+    <h1>qstve</h1>
+    <div class="links">
+      <a href="/palm-desert/" class="link">
+        <span class="emoji">🌴</span>
+        <div class="text">
+          <div class="title">Palm Desert Getaway</div>
+          <div class="desc">Feb 8-12, 2026</div>
         </div>
-      </div>
+      </a>
     </div>
-    
-    <!-- Upcoming Trips -->
-    <div class="section">
-      <h2 class="section-title">
-        <span class="icon">📅</span>
-        Upcoming
-      </h2>
-      <div class="trips-grid">
-        <!-- Palm Desert Trip Card -->
-        <a href="/palm-desert/" class="trip-card">
-          <div class="card-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <span class="status-label upcoming">Upcoming</span>
-            </div>
-            <span class="countdown-badge" id="countdown">Loading...</span>
-          </div>
-          <div class="card-main">
-            <div class="card-emoji">🌴</div>
-            <div class="card-info">
-              <div class="card-title">Palm Desert Getaway</div>
-              <div class="card-location">
-                <span>📍</span>
-                <span>Palm Desert, CA</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-details">
-            <span>📅 Feb 8-12, 2026</span>
-            <span class="sep">·</span>
-            <span>4 nights</span>
-            <span class="sep">·</span>
-            <span>👥 8 travelers</span>
-          </div>
-          <div class="card-footer">
-            <span>🏠 Villa Bella</span>
-            <span class="card-cost">$1,900/couple</span>
-          </div>
-          <span class="card-arrow">›</span>
-        </a>
-      </div>
-    </div>
-    
-    <div class="footer">
-      Trip Dashboard • qstve.com • Made with ❤️ by Steve
-    </div>
+    <div class="footer">Private links</div>
   </div>
-  
-  <script>
-    // Calculate countdown
-    function updateCountdown() {
-      const tripDate = new Date('2026-02-08T00:00:00');
-      const now = new Date();
-      const diff = tripDate - now;
-      
-      if (diff <= 0) {
-        document.getElementById('countdown').textContent = '🌴 Now';
-        document.getElementById('countdown').style.background = 'rgba(74, 222, 128, 0.15)';
-        document.getElementById('countdown').style.color = '#4ade80';
-        document.querySelector('.status-dot').classList.remove('upcoming');
-        document.querySelector('.status-dot').classList.add('active');
-        document.querySelector('.status-label').classList.remove('upcoming');
-        document.querySelector('.status-label').classList.add('active');
-        document.querySelector('.status-label').textContent = 'Active Now';
-      } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        if (days === 0) {
-          document.getElementById('countdown').textContent = 'Tomorrow!';
-        } else if (days === 1) {
-          document.getElementById('countdown').textContent = '1d away';
-        } else {
-          document.getElementById('countdown').textContent = days + 'd away';
-        }
-      }
-    }
-    updateCountdown();
-  </script>
 </body>
 </html>
