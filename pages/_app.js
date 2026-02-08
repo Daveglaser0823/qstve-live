@@ -4,6 +4,14 @@ import Head from 'next/head'
 import '../styles/main.css'
 
 export default function Nextra({ Component, pageProps }) {
+  // Check if the page has a custom getLayout function
+  const getLayout = Component.getLayout || ((page) => page)
+  
+  // If page wants no layout, render it directly
+  if (Component.getLayout) {
+    return getLayout(<Component {...pageProps} />)
+  }
+
   return (
     <>
       <Head>
