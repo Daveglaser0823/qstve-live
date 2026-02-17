@@ -1,7 +1,15 @@
-const withNextra = require('nextra')('nextra-theme-blog', './theme.config.js')
-
-module.exports = withNextra({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // App Router is enabled by default in Next.js 13.4+
+  // No Nextra wrapping - using App Router for all new content
   experimental: {
-    serverActions: true,
+    // App Router is stable in 13.5
   },
-})
+  images: {
+    remotePatterns: [],
+  },
+  // Disable x-powered-by header
+  poweredByHeader: false,
+}
+
+module.exports = nextConfig

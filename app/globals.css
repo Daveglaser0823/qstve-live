@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Inter variable font - loaded locally for zero external requests */
+@font-face {
+  font-family: 'Inter var';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/Inter-roman.latin.var.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter var';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/Inter-italic.latin.var.woff2) format('woff2');
+}
+
+@layer base {
+  html {
+    font-family: 'Inter var', 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'case' 1, 'dlig' 1, 'cv01' 1, 'cv02' 1;
+    font-variation-settings: 'wght' 440;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4 {
+    font-variation-settings: 'wght' 750;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  h1 { font-variation-settings: 'wght' 800; }
+  
+  strong, b {
+    font-variation-settings: 'wght' 650;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Selection color */
+  ::selection {
+    background-color: rgba(200, 135, 60, 0.2);
+  }
+}
+
+@layer components {
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-copper/40 focus-visible:ring-offset-2;
+  }
+  
+  /* Series badge */
+  .badge {
+    @apply text-[11px] font-semibold tracking-[0.08em] uppercase;
+  }
+
+  /* Reading container */
+  .reading-width {
+    max-width: 68ch;
+  }
+}
+
+/* Dark mode adjustments for the whole page */
+@media (prefers-color-scheme: dark) {
+  /* Not used - we use class-based dark mode */
+}
+
+/* Prevent layout shift from theme toggle */
+html:not(.dark) {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
