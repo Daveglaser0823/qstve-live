@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -9,7 +8,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Brand palette
+        // QStve brand palette
+        'bionic-red': '#C8281E',
+        'deep-black': '#0A0A0E',
+        'warm-white': '#F0F0EC',
+        // Utility colors for text/borders
+        'muted': '#8A8A86',
+        'muted-dark': '#5A5A56',
+        'border-subtle': '#2A2A2E',
+        // Legacy aliases (for existing pages like blog, about, etc.)
         ink: '#0F172A',
         paper: '#FAFAF7',
         surface: '#FFFFFF',
@@ -20,11 +27,10 @@ module.exports = {
         'navy-light': '#2D5F9E',
         copper: '#C8873C',
         'copper-light': '#E0A060',
-        // Dark mode overrides (applied via CSS variables)
       },
       fontFamily: {
-        sans: ['Inter var', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
+        sans: ['Chakra Petch', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['Space Mono', 'JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
       },
       fontSize: {
         display: ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.03em' }],

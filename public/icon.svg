@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="64" fill="#0A0A0E"/>
+  <!-- Upper lid -->
+  <path d="M77 256 C77 143, 179 61, 256 61 C333 61, 435 143, 435 256" stroke="#C8281E" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- Lower lid -->
+  <path d="M77 256 C77 369, 179 451, 256 451 C333 451, 435 369, 435 256" stroke="#C8281E" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- Iris ring -->
+  <circle cx="256" cy="256" r="102" stroke="#C8281E" stroke-width="16" fill="none"/>
+  <!-- Pupil -->
+  <circle cx="256" cy="256" r="41" fill="#C8281E"/>
+  <!-- Power stem -->
+  <line x1="256" y1="154" x2="256" y2="92" stroke="#C8281E" stroke-width="16" stroke-linecap="round"/>
+  <!-- Q tail -->
+  <path d="M317 317 C348 348, 379 369, 420 379" stroke="#C8281E" stroke-width="16" stroke-linecap="round" fill="none"/>
+</svg>

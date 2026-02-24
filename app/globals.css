@@ -2,61 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Inter variable font - loaded locally for zero external requests */
-@font-face {
-  font-family: 'Inter var';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url(/fonts/Inter-roman.latin.var.woff2) format('woff2');
-}
-@font-face {
-  font-family: 'Inter var';
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url(/fonts/Inter-italic.latin.var.woff2) format('woff2');
-}
-
 @layer base {
   html {
-    font-family: 'Inter var', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Chakra Petch', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: 'case' 1, 'dlig' 1, 'cv01' 1, 'cv02' 1;
-    font-variation-settings: 'wght' 440;
-    letter-spacing: -0.01em;
+    scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4 {
-    font-variation-settings: 'wght' 750;
+    font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.2;
   }
 
-  h1 { font-variation-settings: 'wght' 800; }
-  
+  h1 { font-weight: 700; }
+
   strong, b {
-    font-variation-settings: 'wght' 650;
+    font-weight: 600;
   }
 
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Selection color */
+  /* Selection color - Bionic Red */
   ::selection {
-    background-color: rgba(200, 135, 60, 0.2);
+    background-color: rgba(200, 40, 30, 0.25);
   }
 }
 
 @layer components {
   /* Focus ring for accessibility */
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-copper/40 focus-visible:ring-offset-2;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-bionic-red/40 focus-visible:ring-offset-2;
   }
-  
+
   /* Series badge */
   .badge {
     @apply text-[11px] font-semibold tracking-[0.08em] uppercase;
@@ -68,15 +45,12 @@
   }
 }
 
-/* Dark mode adjustments for the whole page */
-@media (prefers-color-scheme: dark) {
-  /* Not used - we use class-based dark mode */
+/* Bionic pulse animation for the pupil */
+@keyframes bionic-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-/* Prevent layout shift from theme toggle */
-html:not(.dark) {
-  color-scheme: light;
-}
-html.dark {
-  color-scheme: dark;
+.pupil-pulse {
+  animation: bionic-pulse 3s ease-in-out infinite;
 }

@@ -5,18 +5,18 @@ import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dave Glaser | Man & Machine',
-    template: '%s | Dave Glaser',
+    default: 'QStve - Power On Intelligence',
+    template: '%s | QStve',
   },
-  description: "A CEO's real journey building with AI. Not theory. Not hype. What's actually working.",
+  description: 'Man & Machine',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://qstve.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://qstve.com',
-    siteName: 'QSTVE',
-    title: 'Dave Glaser | Man & Machine',
-    description: "A CEO's real journey building with AI. Not theory. Not hype. What's actually working.",
+    siteName: 'QStve',
+    title: 'QStve - Power On Intelligence',
+    description: 'Man & Machine',
   },
   twitter: {
     card: 'summary_large_image',
@@ -28,6 +28,13 @@ export const metadata: Metadata = {
       'application/rss+xml': '/feed.xml',
     },
   },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -36,23 +43,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        {/* Inline script: set dark class before first paint to prevent flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                var t = localStorage.getItem('theme');
-                if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                }
-              } catch(e) {}
-            `,
-          }}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Space+Mono:wght@400&display=swap"
+          rel="stylesheet"
         />
       </head>
-      <body className="bg-paper dark:bg-[#111110] text-ink dark:text-[#F5F2EC] min-h-screen flex flex-col antialiased transition-colors duration-150">
+      <body className="bg-deep-black text-warm-white min-h-screen flex flex-col antialiased">
         <Nav />
         <main className="flex-1">
           {children}
