@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
@@ -53,11 +54,13 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-deep-black text-warm-white min-h-screen flex flex-col antialiased">
-        <Nav />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <ClerkProvider>
+          <Nav />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ClerkProvider>
       </body>
     </html>
   )
