@@ -1,0 +1,4 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "node ./scripts/gen-rss.js && next build"
+}
