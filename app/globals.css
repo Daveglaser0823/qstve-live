@@ -2,55 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: 'Chakra Petch', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
-  }
-
-  h1, h2, h3, h4 {
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-  }
-
-  h1 { font-weight: 700; }
-
-  strong, b {
-    font-weight: 600;
-  }
-
-  /* Selection color - Bionic Red */
-  ::selection {
-    background-color: rgba(200, 40, 30, 0.25);
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
-@layer components {
-  /* Focus ring for accessibility */
-  .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-bionic-red/40 focus-visible:ring-offset-2;
-  }
-
-  /* Series badge */
-  .badge {
-    @apply text-[11px] font-semibold tracking-[0.08em] uppercase;
-  }
-
-  /* Reading container */
-  .reading-width {
-    max-width: 68ch;
-  }
+::selection {
+  background-color: rgba(200, 40, 30, 0.25);
 }
 
-/* Bionic pulse animation for the pupil */
-@keyframes bionic-pulse {
+@keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
 
 .pupil-pulse {
-  animation: bionic-pulse 3s ease-in-out infinite;
+  animation: pulse 3s ease-in-out infinite;
 }
