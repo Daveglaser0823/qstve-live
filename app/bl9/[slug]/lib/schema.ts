@@ -24,6 +24,11 @@ export function validateContent(data: unknown): ValidationResult {
     }
   }
 
+  // Optional decorations field
+  if ('decorations' in content && typeof content.decorations !== 'string') {
+    errors.push('decorations must be a string if provided');
+  }
+
   if (errors.length > 0) {
     return { valid: false, errors };
   }
@@ -33,17 +38,15 @@ export function validateContent(data: unknown): ValidationResult {
   if (!meta || typeof meta !== 'object') {
     errors.push('meta must be an object');
   } else {
-    for (const field of [
-      'eventSlug',
-      'title',
-      'dateLabel',
-      'hostClub',
-      'contactName',
-      'contactEmail',
-      'contactPhone',
-    ]) {
+    for (const field of ['eventSlug', 'title', 'dateLabel', 'hostClub']) {
       if (!meta[field] || typeof meta[field] !== 'string') {
         errors.push(`meta.${field} is required and must be a string`);
+      }
+    }
+    // These fields are optional (can be empty strings)
+    for (const field of ['contactName', 'contactEmail', 'contactPhone', 'course', 'subtitle']) {
+      if (field in meta && typeof meta[field] !== 'string') {
+        errors.push(`meta.${field} must be a string if provided`);
       }
     }
     if (

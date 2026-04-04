@@ -64,4 +64,5 @@ export interface EventContent {
   hero: EventHero;
   quickFacts: QuickFact[];
   pages: EventPage[];
+  decorations?: string;
 }

@@ -1,24 +1,42 @@
 'use client';
 
 import type { EventPage, EventTheme } from '../lib/types';
+import ThemeDecorations from './ThemeDecorations';
 
 interface PageRendererProps {
   page: EventPage;
   theme: EventTheme;
+  decorations?: string;
 }
 
-export default function PageRenderer({ page, theme }: PageRendererProps) {
+export default function PageRenderer({ page, theme, decorations }: PageRendererProps) {
+  const isFiesta = decorations === 'fiesta-fairway';
+
   return (
     <div
       className="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-16"
       style={{ backgroundColor: theme.background, color: theme.text }}
     >
       <div className="max-w-2xl w-full mx-auto">
-        {/* Page title */}
-        <div className="w-8 h-px mx-auto mb-8" style={{ backgroundColor: theme.accent2 }} />
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 font-serif">
+        {/* Themed page header decoration */}
+        {decorations ? (
+          <ThemeDecorations decorations={decorations} theme={theme} placement="page-top" />
+        ) : (
+          <div className="w-8 h-px mx-auto mb-8" style={{ backgroundColor: theme.accent2 }} />
+        )}
+        <h2
+          className={`text-3xl sm:text-4xl font-bold text-center mb-4 ${isFiesta ? 'font-fiesta' : 'font-serif'}`}
+        >
           {page.title}
         </h2>
+        {/* Golf icon divider under title */}
+        {decorations ? (
+          <div className="mb-10">
+            <ThemeDecorations decorations={decorations} theme={theme} placement="page-divider" />
+          </div>
+        ) : (
+          <div className="mb-10" />
+        )}
 
         {/* Layout-specific content */}
         {page.layout === 'text' && <TextLayout page={page} theme={theme} />}
@@ -156,7 +174,7 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
         </div>
       )}
 
-      {contact && (
+      {contact && (contact.name || contact.email || contact.phone) && (
         <div
           className="rounded-xl px-8 py-8 max-w-sm mx-auto text-center"
           style={{
@@ -164,22 +182,26 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
             boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
           }}
         >
-          <p className="text-lg font-semibold mb-4">{contact.name}</p>
+          {contact.name && <p className="text-lg font-semibold mb-4">{contact.name}</p>}
           <div className="space-y-2 text-sm opacity-70">
-            <a
-              href={`mailto:${contact.email}`}
-              className="block hover:opacity-100 transition-opacity"
-              style={{ color: theme.accent }}
-            >
-              {contact.email}
-            </a>
-            <a
-              href={`tel:${contact.phone.replace(/\D/g, '')}`}
-              className="block hover:opacity-100 transition-opacity"
-              style={{ color: theme.accent }}
-            >
-              {contact.phone}
-            </a>
+            {contact.email && (
+              <a
+                href={`mailto:${contact.email}`}
+                className="block hover:opacity-100 transition-opacity"
+                style={{ color: theme.accent }}
+              >
+                {contact.email}
+              </a>
+            )}
+            {contact.phone && (
+              <a
+                href={`tel:${contact.phone.replace(/\D/g, '')}`}
+                className="block hover:opacity-100 transition-opacity"
+                style={{ color: theme.accent }}
+              >
+                {contact.phone}
+              </a>
+            )}
           </div>
         </div>
       )}

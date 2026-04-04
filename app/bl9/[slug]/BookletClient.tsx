@@ -5,6 +5,7 @@ import Cover from './components/Cover';
 import Navigation from './components/Navigation';
 import PageRenderer from './components/PageRenderer';
 import QuickFacts from './components/QuickFacts';
+import ThemeDecorations from './components/ThemeDecorations';
 import type { EventContent } from './lib/types';
 
 interface BookletClientProps {
@@ -13,7 +14,7 @@ interface BookletClientProps {
 }
 
 export default function BookletClient({ content, slug }: BookletClientProps) {
-  const { meta, theme, hero, quickFacts, pages } = content;
+  const { meta, theme, hero, quickFacts, pages, decorations } = content;
 
   // Total "screens": cover + quickFacts + body pages
   const totalPages = 2 + pages.length;
@@ -64,14 +65,14 @@ export default function BookletClient({ content, slug }: BookletClientProps) {
           theme={theme}
         />
 
-        <Cover meta={meta} hero={hero} theme={theme} slug={slug} />
+        <Cover meta={meta} hero={hero} theme={theme} slug={slug} decorations={decorations} />
         <QuickFacts facts={quickFacts} theme={theme} />
         {pages.map((page) => (
-          <PageRenderer key={page.id} page={page} theme={theme} />
+          <PageRenderer key={page.id} page={page} theme={theme} decorations={decorations} />
         ))}
 
         {/* Footer */}
-        <Footer meta={meta} theme={theme} />
+        <Footer meta={meta} theme={theme} decorations={decorations} />
       </div>
     );
   }
@@ -87,12 +88,18 @@ export default function BookletClient({ content, slug }: BookletClientProps) {
       />
 
       {/* Current page */}
-      {currentPage === 0 && <Cover meta={meta} hero={hero} theme={theme} slug={slug} />}
+      {currentPage === 0 && (
+        <Cover meta={meta} hero={hero} theme={theme} slug={slug} decorations={decorations} />
+      )}
       {currentPage === 1 && <QuickFacts facts={quickFacts} theme={theme} />}
-      {currentPage >= 2 && <PageRenderer page={pages[currentPage - 2]} theme={theme} />}
+      {currentPage >= 2 && (
+        <PageRenderer page={pages[currentPage - 2]} theme={theme} decorations={decorations} />
+      )}
 
       {/* Footer on last page */}
-      {currentPage === totalPages - 1 && <Footer meta={meta} theme={theme} />}
+      {currentPage === totalPages - 1 && (
+        <Footer meta={meta} theme={theme} decorations={decorations} />
+      )}
 
       <Navigation
         currentPage={currentPage}
@@ -161,12 +168,23 @@ function ModeToggle({
   );
 }
 
-function Footer({ meta, theme }: { meta: EventContent['meta']; theme: EventContent['theme'] }) {
+function Footer({
+  meta,
+  theme,
+  decorations,
+}: {
+  meta: EventContent['meta'];
+  theme: EventContent['theme'];
+  decorations?: string;
+}) {
   return (
     <div
       className="py-12 text-center text-xs opacity-40 px-6"
       style={{ backgroundColor: theme.background, color: theme.text }}
     >
+      {decorations && (
+        <ThemeDecorations decorations={decorations} theme={theme} placement="footer" />
+      )}
       <p>{meta.hostClub}</p>
       <p className="mt-1">BL9 Golf League</p>
     </div>

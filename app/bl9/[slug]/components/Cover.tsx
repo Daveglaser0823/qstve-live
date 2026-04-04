@@ -1,15 +1,17 @@
 'use client';
 
 import type { EventHero, EventMeta, EventTheme } from '../lib/types';
+import ThemeDecorations from './ThemeDecorations';
 
 interface CoverProps {
   meta: EventMeta;
   hero: EventHero;
   theme: EventTheme;
   slug: string;
+  decorations?: string;
 }
 
-export default function Cover({ meta, hero, theme, slug }: CoverProps) {
+export default function Cover({ meta, hero, theme, slug, decorations }: CoverProps) {
   const heroImagePath = hero.image
     ? `/bl9/events/${slug}/assets/${hero.image.replace('assets/', '')}`
     : null;
@@ -19,6 +21,16 @@ export default function Cover({ meta, hero, theme, slug }: CoverProps) {
       className="relative flex flex-col items-center justify-center min-h-[100dvh] px-6 text-center overflow-hidden"
       style={{ backgroundColor: theme.background, color: theme.text }}
     >
+      {/* Fiesta decorations - top banner */}
+      {decorations && (
+        <ThemeDecorations decorations={decorations} theme={theme} placement="cover-top" />
+      )}
+
+      {/* Fiesta decorations - lady golfer accent */}
+      {decorations && (
+        <ThemeDecorations decorations={decorations} theme={theme} placement="cover-bottom" />
+      )}
+
       {/* Background image with overlay */}
       {heroImagePath && (
         <div
@@ -45,7 +57,9 @@ export default function Cover({ meta, hero, theme, slug }: CoverProps) {
         <div className="w-12 h-px mx-auto mb-10" style={{ backgroundColor: theme.accent2 }} />
 
         {/* Title */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 font-serif">
+        <h1
+          className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 ${decorations === 'fiesta-fairway' ? 'font-fiesta' : 'font-serif'}`}
+        >
           {meta.title}
         </h1>
 
