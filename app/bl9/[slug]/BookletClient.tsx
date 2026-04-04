@@ -66,7 +66,7 @@ export default function BookletClient({ content, slug }: BookletClientProps) {
         />
 
         <Cover meta={meta} hero={hero} theme={theme} slug={slug} decorations={decorations} />
-        <QuickFacts facts={quickFacts} theme={theme} />
+        <QuickFacts facts={quickFacts} theme={theme} decorations={decorations} />
         {pages.map((page) => (
           <PageRenderer key={page.id} page={page} theme={theme} decorations={decorations} />
         ))}
@@ -91,7 +91,9 @@ export default function BookletClient({ content, slug }: BookletClientProps) {
       {currentPage === 0 && (
         <Cover meta={meta} hero={hero} theme={theme} slug={slug} decorations={decorations} />
       )}
-      {currentPage === 1 && <QuickFacts facts={quickFacts} theme={theme} />}
+      {currentPage === 1 && (
+        <QuickFacts facts={quickFacts} theme={theme} decorations={decorations} />
+      )}
       {currentPage >= 2 && (
         <PageRenderer page={pages[currentPage - 2]} theme={theme} decorations={decorations} />
       )}
@@ -177,6 +179,24 @@ function Footer({
   theme: EventContent['theme'];
   decorations?: string;
 }) {
+  const isFiesta = decorations === 'fiesta-fairway';
+
+  if (isFiesta) {
+    return (
+      <div className="text-center px-6" style={{ backgroundColor: '#FFF8DC' }}>
+        {decorations && (
+          <div className="py-4">
+            <ThemeDecorations decorations={decorations} theme={theme} placement="footer" />
+          </div>
+        )}
+        <div className="py-4 px-4" style={{ backgroundColor: '#1E3A8A' }}>
+          <p className="text-white font-bold text-sm">{meta.hostClub}</p>
+          <p className="text-white text-xs mt-1 opacity-80">BL9 Golf League</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="py-12 text-center text-xs opacity-40 px-6"

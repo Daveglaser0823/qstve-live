@@ -9,52 +9,125 @@ interface PageRendererProps {
   decorations?: string;
 }
 
+const SECTION_COLORS = [
+  '#C41E3A',
+  '#1E3A8A',
+  '#1B8C3A',
+  '#C41E3A',
+  '#1E3A8A',
+  '#1B8C3A',
+  '#C41E3A',
+];
+
 export default function PageRenderer({ page, theme, decorations }: PageRendererProps) {
   const isFiesta = decorations === 'fiesta-fairway';
 
   return (
     <div
       className="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-16"
-      style={{ backgroundColor: theme.background, color: theme.text }}
+      style={{ backgroundColor: isFiesta ? '#FFF8DC' : theme.background, color: theme.text }}
     >
       <div className="max-w-2xl w-full mx-auto">
-        {/* Themed page header decoration */}
-        {decorations ? (
-          <ThemeDecorations decorations={decorations} theme={theme} placement="page-top" />
+        {isFiesta ? (
+          <FiestaPageTitle title={page.title} pageId={page.id} />
         ) : (
-          <div className="w-8 h-px mx-auto mb-8" style={{ backgroundColor: theme.accent2 }} />
-        )}
-        <h2
-          className={`text-3xl sm:text-4xl font-bold text-center mb-4 ${isFiesta ? 'font-fiesta' : 'font-serif'}`}
-        >
-          {page.title}
-        </h2>
-        {/* Golf icon divider under title */}
-        {decorations ? (
-          <div className="mb-10">
-            <ThemeDecorations decorations={decorations} theme={theme} placement="page-divider" />
-          </div>
-        ) : (
-          <div className="mb-10" />
+          <>
+            {decorations ? (
+              <ThemeDecorations decorations={decorations} theme={theme} placement="page-top" />
+            ) : (
+              <div className="w-8 h-px mx-auto mb-8" style={{ backgroundColor: theme.accent2 }} />
+            )}
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-serif">
+              {page.title}
+            </h2>
+            {decorations ? (
+              <div className="mb-10">
+                <ThemeDecorations
+                  decorations={decorations}
+                  theme={theme}
+                  placement="page-divider"
+                />
+              </div>
+            ) : (
+              <div className="mb-10" />
+            )}
+          </>
         )}
 
         {/* Layout-specific content */}
-        {page.layout === 'text' && <TextLayout page={page} theme={theme} />}
-        {page.layout === 'bullets' && <BulletsLayout page={page} theme={theme} />}
+        {page.layout === 'text' && <TextLayout page={page} theme={theme} isFiesta={isFiesta} />}
+        {page.layout === 'bullets' && (
+          <BulletsLayout page={page} theme={theme} isFiesta={isFiesta} />
+        )}
         {page.layout === 'documents' && <DocumentsLayout page={page} theme={theme} />}
-        {page.layout === 'contact' && <ContactLayout page={page} theme={theme} />}
+        {page.layout === 'contact' && (
+          <ContactLayout page={page} theme={theme} isFiesta={isFiesta} />
+        )}
       </div>
     </div>
   );
 }
 
-function TextLayout({ page, theme }: { page: EventPage; theme: EventTheme }) {
+/** Bold colored banner header for fiesta pages */
+function FiestaPageTitle({ title, pageId }: { title: string; pageId: string }) {
+  const pages = ['welcome', 'format', 'social', 'signup', 'eligibility', 'cancellation', 'contact'];
+  const idx = pages.indexOf(pageId);
+  const color = SECTION_COLORS[idx >= 0 ? idx : 0];
+
+  return (
+    <div className="mb-8">
+      <ThemeDecorations
+        decorations="fiesta-fairway"
+        theme={{
+          accent: '#C41E3A',
+          accent2: '#1E3A8A',
+          background: '#FFF8DC',
+          text: '#1a1a1a',
+          card: '#fff',
+        }}
+        placement="page-top"
+      />
+      <div
+        className="w-full py-3 px-6 text-center rounded-xl shadow-md"
+        style={{ backgroundColor: color }}
+      >
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-wide font-fiesta">
+          {title}
+        </h2>
+      </div>
+      <div className="mt-4">
+        <ThemeDecorations
+          decorations="fiesta-fairway"
+          theme={{
+            accent: '#C41E3A',
+            accent2: '#1E3A8A',
+            background: '#FFF8DC',
+            text: '#1a1a1a',
+            card: '#fff',
+          }}
+          placement="page-divider"
+        />
+      </div>
+    </div>
+  );
+}
+
+function TextLayout({
+  page,
+  theme,
+  isFiesta,
+}: {
+  page: EventPage;
+  theme: EventTheme;
+  isFiesta: boolean;
+}) {
   return (
     <div className="space-y-6">
       {page.body?.map((paragraph) => (
         <p
           key={paragraph.slice(0, 40)}
-          className="text-base sm:text-lg leading-relaxed text-center opacity-80"
+          className={`leading-relaxed text-center ${isFiesta ? 'text-lg sm:text-xl' : 'text-base sm:text-lg opacity-80'}`}
+          style={isFiesta ? { color: '#1a1a1a' } : undefined}
         >
           {paragraph}
         </p>
@@ -64,20 +137,52 @@ function TextLayout({ page, theme }: { page: EventPage; theme: EventTheme }) {
   );
 }
 
-function BulletsLayout({ page, theme }: { page: EventPage; theme: EventTheme }) {
+function BulletsLayout({
+  page,
+  theme,
+  isFiesta,
+}: {
+  page: EventPage;
+  theme: EventTheme;
+  isFiesta: boolean;
+}) {
+  const bulletColors = ['#C41E3A', '#1B8C3A', '#1E3A8A', '#F5D547'];
+
   return (
     <div>
-      <ul className="space-y-4 max-w-lg mx-auto">
-        {page.body?.map((item) => (
+      <ul className="space-y-5 max-w-lg mx-auto">
+        {page.body?.map((item, idx) => (
           <li
             key={item.slice(0, 40)}
-            className="flex items-start gap-3 text-base sm:text-lg leading-relaxed"
+            className={`flex items-start gap-4 ${isFiesta ? 'text-lg sm:text-xl leading-relaxed' : 'text-base sm:text-lg leading-relaxed'}`}
           >
-            <span
-              className="mt-2 w-2 h-2 rounded-full flex-shrink-0"
-              style={{ backgroundColor: theme.accent }}
-            />
-            <span className="opacity-80">{item}</span>
+            {isFiesta ? (
+              <span className="mt-1 flex-shrink-0">
+                <svg
+                  viewBox="0 0 20 50"
+                  width={10}
+                  height={25}
+                  style={{ transform: `rotate(${idx % 2 === 0 ? -20 : 20}deg)` }}
+                  aria-hidden="true"
+                >
+                  <rect x="8.5" y="25" width="3" height="18" rx="1.5" fill="#8B4513" />
+                  <ellipse
+                    cx="10"
+                    cy="16"
+                    rx="8"
+                    ry="11"
+                    fill={bulletColors[idx % bulletColors.length]}
+                  />
+                  <ellipse cx="10" cy="12" rx="7" ry="3" fill="#1B8C3A" opacity="0.6" />
+                </svg>
+              </span>
+            ) : (
+              <span
+                className="mt-2 w-2 h-2 rounded-full flex-shrink-0"
+                style={{ backgroundColor: theme.accent }}
+              />
+            )}
+            <span className={isFiesta ? 'font-medium' : 'opacity-80'}>{item}</span>
           </li>
         ))}
       </ul>
@@ -156,7 +261,15 @@ function DocumentsLayout({ page, theme }: { page: EventPage; theme: EventTheme }
   );
 }
 
-function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) {
+function ContactLayout({
+  page,
+  theme,
+  isFiesta,
+}: {
+  page: EventPage;
+  theme: EventTheme;
+  isFiesta: boolean;
+}) {
   const contact = page.contact;
 
   return (
@@ -166,7 +279,7 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
           {page.body.map((paragraph) => (
             <p
               key={paragraph.slice(0, 40)}
-              className="text-base sm:text-lg leading-relaxed text-center opacity-80"
+              className={`leading-relaxed text-center ${isFiesta ? 'text-lg sm:text-xl' : 'text-base sm:text-lg opacity-80'}`}
             >
               {paragraph}
             </p>
@@ -178,8 +291,9 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
         <div
           className="rounded-xl px-8 py-8 max-w-sm mx-auto text-center"
           style={{
-            backgroundColor: theme.card,
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            backgroundColor: isFiesta ? '#1E3A8A' : theme.card,
+            color: isFiesta ? '#ffffff' : theme.text,
+            boxShadow: isFiesta ? '0 4px 12px rgba(0,0,0,0.15)' : '0 1px 3px rgba(0,0,0,0.04)',
           }}
         >
           {contact.name && <p className="text-lg font-semibold mb-4">{contact.name}</p>}
@@ -188,7 +302,7 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
               <a
                 href={`mailto:${contact.email}`}
                 className="block hover:opacity-100 transition-opacity"
-                style={{ color: theme.accent }}
+                style={{ color: isFiesta ? '#FFD700' : theme.accent }}
               >
                 {contact.email}
               </a>
@@ -197,7 +311,7 @@ function ContactLayout({ page, theme }: { page: EventPage; theme: EventTheme }) 
               <a
                 href={`tel:${contact.phone.replace(/\D/g, '')}`}
                 className="block hover:opacity-100 transition-opacity"
-                style={{ color: theme.accent }}
+                style={{ color: isFiesta ? '#FFD700' : theme.accent }}
               >
                 {contact.phone}
               </a>

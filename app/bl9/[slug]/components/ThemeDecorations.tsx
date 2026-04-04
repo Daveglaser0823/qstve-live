@@ -8,55 +8,64 @@ interface ThemeDecorationsProps {
   placement: 'cover-top' | 'cover-bottom' | 'page-top' | 'page-divider' | 'footer';
 }
 
-export default function ThemeDecorations({ decorations, theme, placement }: ThemeDecorationsProps) {
+export default function ThemeDecorations({
+  decorations,
+  theme: _theme,
+  placement,
+}: ThemeDecorationsProps) {
   if (decorations !== 'fiesta-fairway') return null;
 
   switch (placement) {
     case 'cover-top':
-      return <PapelPicadoBanner theme={theme} />;
+      return <PapelPicadoBanner />;
     case 'cover-bottom':
-      return <LadyGolferAccent theme={theme} />;
+      return null; // Handled inline in FiestaCover now
     case 'page-top':
-      return <PapelPicadoMini theme={theme} />;
+      return <FiestaPageHeader />;
     case 'page-divider':
-      return <GolfIconDivider theme={theme} />;
+      return <FiestaDivider />;
     case 'footer':
-      return <FiestaFooterAccent theme={theme} />;
+      return <FiestaFooterAccent />;
     default:
       return null;
   }
 }
 
-/** Full-width papel picado banner for cover page */
-function PapelPicadoBanner({ theme }: { theme: EventTheme }) {
-  const colors = [theme.accent, theme.accent2, '#2A8B7B', theme.accent, theme.accent2];
+/** Full-width papel picado banner - big, colorful flags with sombrero cutouts */
+function PapelPicadoBanner() {
+  const flags = [
+    { color: '#C41E3A', variant: 0 },
+    { color: '#1B8C3A', variant: 1 },
+    { color: '#F5D547', variant: 2 },
+    { color: '#1B8C3A', variant: 0 },
+    { color: '#C41E3A', variant: 1 },
+    { color: '#F5D547', variant: 2 },
+    { color: '#1B8C3A', variant: 0 },
+  ];
 
   return (
-    <div
-      className="absolute top-0 left-0 right-0 overflow-hidden pointer-events-none"
-      aria-hidden="true"
-    >
+    <div className="w-full overflow-hidden pointer-events-none" aria-hidden="true">
       <svg
-        viewBox="0 0 800 80"
+        viewBox="0 0 700 100"
         className="w-full"
         preserveAspectRatio="none"
-        style={{ height: 'clamp(50px, 10vw, 80px)' }}
+        style={{ height: 'clamp(60px, 14vw, 110px)' }}
         role="presentation"
       >
-        {/* Hanging string */}
+        {/* Hanging string - thick rope */}
         <path
-          d="M0,8 Q100,16 200,10 Q300,4 400,12 Q500,18 600,8 Q700,2 800,10"
+          d="M0,10 Q50,18 100,12 Q150,6 200,14 Q250,20 300,12 Q350,6 400,14 Q450,20 500,12 Q550,6 600,14 Q650,18 700,10"
           fill="none"
-          stroke={theme.accent2}
-          strokeWidth="1.5"
-          opacity="0.6"
+          stroke="#8B4513"
+          strokeWidth="3"
         />
-        {/* Individual papel picado flags */}
-        {colors.map((color, i) => {
-          const x = 80 + i * 140;
+        {/* Flags */}
+        {flags.map((flag, i) => {
+          const x = 15 + i * 96;
+          const y = i % 2 === 0 ? 12 : 16;
           return (
-            <g key={`flag-${x}`} transform={`translate(${x}, 8)`}>
-              <PapelPicadoFlag color={color} variant={i % 3} />
+            <g key={`flag-${x}-${flag.color}`} transform={`translate(${x}, ${y})`}>
+              <PapelPicadoFlag color={flag.color} variant={flag.variant} />
             </g>
           );
         })}
@@ -65,205 +74,184 @@ function PapelPicadoBanner({ theme }: { theme: EventTheme }) {
   );
 }
 
-/** Single papel picado flag with cutout patterns */
+/** Single papel picado flag with festive cutout patterns including sombrero */
 function PapelPicadoFlag({ color, variant }: { color: string; variant: number }) {
-  // Each variant has different cutout patterns
   const cutouts = [
-    // Variant 0: diamond and circle cutouts
+    // Variant 0: sombrero cutout
     <>
-      <circle cx="30" cy="28" r="4" fill="white" opacity="0.9" />
+      {/* Sombrero brim */}
+      <ellipse cx="35" cy="42" rx="16" ry="5" fill="white" opacity="0.85" />
+      {/* Sombrero crown */}
+      <path d="M27,42 Q27,30 35,28 Q43,30 43,42 Z" fill="white" opacity="0.85" />
+      {/* Decorative dots */}
+      <circle cx="20" cy="56" r="3" fill="white" opacity="0.7" />
+      <circle cx="50" cy="56" r="3" fill="white" opacity="0.7" />
+      {/* Scalloped edge holes */}
+      <circle cx="14" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="24" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="35" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="46" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="56" cy="68" r="2" fill="white" opacity="0.6" />
+    </>,
+    // Variant 1: sun/star and diamond cutouts
+    <>
+      {/* Sun/star */}
+      <circle cx="35" cy="36" r="6" fill="white" opacity="0.85" />
+      <path d="M35,26 L37,32 L35,30 L33,32 Z" fill="white" opacity="0.7" />
+      <path d="M35,46 L37,40 L35,42 L33,40 Z" fill="white" opacity="0.7" />
+      <path d="M25,36 L31,34 L29,36 L31,38 Z" fill="white" opacity="0.7" />
+      <path d="M45,36 L39,34 L41,36 L39,38 Z" fill="white" opacity="0.7" />
+      {/* Diamonds */}
       <rect
         x="18"
-        y="36"
-        width="6"
-        height="6"
-        transform="rotate(45 21 39)"
+        y="52"
+        width="7"
+        height="7"
+        transform="rotate(45 21.5 55.5)"
         fill="white"
-        opacity="0.9"
+        opacity="0.75"
       />
       <rect
-        x="36"
-        y="36"
-        width="6"
-        height="6"
-        transform="rotate(45 39 39)"
+        x="44"
+        y="52"
+        width="7"
+        height="7"
+        transform="rotate(45 47.5 55.5)"
         fill="white"
-        opacity="0.9"
+        opacity="0.75"
       />
-      <circle cx="30" cy="48" r="3" fill="white" opacity="0.9" />
+      {/* Bottom scallop holes */}
+      <circle cx="14" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="35" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="56" cy="68" r="2" fill="white" opacity="0.6" />
     </>,
-    // Variant 1: heart and star cutouts
+    // Variant 2: flower/heart cutouts
     <>
+      {/* Flower center */}
+      <circle cx="35" cy="38" r="4" fill="white" opacity="0.85" />
+      {/* Petals */}
+      <circle cx="35" cy="30" r="3.5" fill="white" opacity="0.7" />
+      <circle cx="35" cy="46" r="3.5" fill="white" opacity="0.7" />
+      <circle cx="27" cy="38" r="3.5" fill="white" opacity="0.7" />
+      <circle cx="43" cy="38" r="3.5" fill="white" opacity="0.7" />
+      {/* Hearts at sides */}
       <path
-        d="M30,30 C30,26 24,24 24,28 C24,32 30,36 30,36 C30,36 36,32 36,28 C36,24 30,26 30,30Z"
+        d="M18,56 C18,52 12,50 12,54 C12,58 18,62 18,62 C18,62 24,58 24,54 C24,50 18,52 18,56Z"
         fill="white"
-        opacity="0.9"
+        opacity="0.7"
       />
-      <circle cx="22" cy="44" r="3" fill="white" opacity="0.9" />
-      <circle cx="38" cy="44" r="3" fill="white" opacity="0.9" />
-    </>,
-    // Variant 2: flower cutouts
-    <>
-      <circle cx="30" cy="32" r="3" fill="white" opacity="0.9" />
-      <circle cx="24" cy="32" r="2" fill="white" opacity="0.7" />
-      <circle cx="36" cy="32" r="2" fill="white" opacity="0.7" />
-      <circle cx="30" cy="26" r="2" fill="white" opacity="0.7" />
-      <circle cx="30" cy="38" r="2" fill="white" opacity="0.7" />
-      <rect x="20" y="46" width="20" height="1" fill="white" opacity="0.5" />
+      <path
+        d="M52,56 C52,52 46,50 46,54 C46,58 52,62 52,62 C52,62 58,58 58,54 C58,50 52,52 52,56Z"
+        fill="white"
+        opacity="0.7"
+      />
+      {/* Bottom holes */}
+      <circle cx="20" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="35" cy="68" r="2" fill="white" opacity="0.6" />
+      <circle cx="50" cy="68" r="2" fill="white" opacity="0.6" />
     </>,
   ];
 
   return (
     <g>
-      {/* Flag body */}
+      {/* Flag body with scalloped bottom edge */}
       <path
-        d="M10,0 L50,0 L50,52 L46,48 L42,52 L38,48 L34,52 L30,48 L26,52 L22,48 L18,52 L14,48 L10,52 Z"
+        d="M5,0 L65,0 L65,72 L60,66 L55,72 L50,66 L45,72 L40,66 L35,72 L30,66 L25,72 L20,66 L15,72 L10,66 L5,72 Z"
         fill={color}
-        opacity="0.85"
+        opacity="0.92"
       />
+      {/* Top fold line */}
+      <rect x="5" y="0" width="60" height="6" fill={color} opacity="1" />
+      <line x1="5" y1="6" x2="65" y2="6" stroke="white" strokeWidth="0.5" opacity="0.3" />
       {/* Cutout pattern */}
       {cutouts[variant]}
     </g>
   );
 }
 
-/** Mini papel picado for page headers */
-function PapelPicadoMini({ theme }: { theme: EventTheme }) {
-  const colors = [theme.accent, theme.accent2, '#2A8B7B'];
-
+/** Colorful page header with mini maracas */
+function FiestaPageHeader() {
   return (
-    <div className="flex justify-center mb-4 pointer-events-none" aria-hidden="true">
-      <svg
-        viewBox="0 0 240 32"
-        className="w-48 sm:w-56"
-        style={{ height: '28px' }}
-        role="presentation"
-      >
+    <div
+      className="flex items-center justify-center gap-3 mb-4 pointer-events-none"
+      aria-hidden="true"
+    >
+      <MiniMaraca direction="left" />
+      <svg viewBox="0 0 60 8" width="60" height="8" role="presentation">
+        <circle cx="8" cy="4" r="3.5" fill="#C41E3A" opacity="0.8" />
+        <circle cx="22" cy="4" r="3.5" fill="#1B8C3A" opacity="0.8" />
+        <circle cx="36" cy="4" r="3.5" fill="#F5D547" opacity="0.8" />
+        <circle cx="50" cy="4" r="3.5" fill="#1E3A8A" opacity="0.8" />
+      </svg>
+      <MiniMaraca direction="right" />
+    </div>
+  );
+}
+
+/** Mini maraca for page accents */
+function MiniMaraca({ direction }: { direction: 'left' | 'right' }) {
+  const rotate = direction === 'left' ? -25 : 25;
+  return (
+    <svg
+      viewBox="0 0 20 50"
+      width={14}
+      height={35}
+      style={{ transform: `rotate(${rotate}deg)` }}
+      role="presentation"
+    >
+      <rect x="8.5" y="25" width="3" height="18" rx="1.5" fill="#8B4513" />
+      <ellipse cx="10" cy="16" rx="8" ry="11" fill="#C41E3A" />
+      <ellipse cx="10" cy="12" rx="7" ry="3" fill="#1B8C3A" opacity="0.85" />
+      <ellipse cx="10" cy="20" rx="6" ry="2.5" fill="#1B8C3A" opacity="0.85" />
+      <ellipse cx="10" cy="8" rx="4" ry="2" fill="#F5D547" opacity="0.6" />
+    </svg>
+  );
+}
+
+/** Festive divider with colored dots and mini flags */
+function FiestaDivider() {
+  return (
+    <div
+      className="flex items-center justify-center gap-2 my-2 pointer-events-none"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 200 12" width="200" height="12" role="presentation">
+        <line x1="0" y1="6" x2="40" y2="6" stroke="#C41E3A" strokeWidth="2" opacity="0.4" />
+        <circle cx="50" cy="6" r="4" fill="#C41E3A" opacity="0.6" />
+        <circle cx="65" cy="6" r="3" fill="#1B8C3A" opacity="0.6" />
+        <circle cx="78" cy="6" r="4" fill="#F5D547" opacity="0.6" />
+        {/* Mini cactus */}
         <path
-          d="M0,4 Q40,8 80,5 Q120,2 160,6 Q200,9 240,4"
+          d="M95,10 L95,4 M92,6 Q92,3 95,4 M98,7 Q98,4 95,5"
+          stroke="#1B8C3A"
+          strokeWidth="1.5"
           fill="none"
-          stroke={theme.accent2}
-          strokeWidth="1"
+          strokeLinecap="round"
           opacity="0.5"
         />
-        {colors.map((color, i) => {
-          const x = 30 + i * 70;
-          return (
-            <g key={`mini-${x}`} transform={`translate(${x}, 4) scale(0.4)`}>
-              <PapelPicadoFlag color={color} variant={i} />
-            </g>
-          );
-        })}
+        <circle cx="112" cy="6" r="4" fill="#F5D547" opacity="0.6" />
+        <circle cx="125" cy="6" r="3" fill="#1B8C3A" opacity="0.6" />
+        <circle cx="138" cy="6" r="4" fill="#C41E3A" opacity="0.6" />
+        <line x1="150" y1="6" x2="200" y2="6" stroke="#C41E3A" strokeWidth="2" opacity="0.4" />
       </svg>
     </div>
   );
 }
 
-/** Golf icon divider between sections */
-function GolfIconDivider({ theme }: { theme: EventTheme }) {
+/** Footer accent */
+function FiestaFooterAccent() {
   return (
     <div
-      className="flex items-center justify-center gap-3 my-2 pointer-events-none"
+      className="flex items-center justify-center gap-3 mb-2 pointer-events-none"
       aria-hidden="true"
     >
-      <div className="w-8 h-px" style={{ backgroundColor: theme.accent2, opacity: 0.3 }} />
-      <GolfBallIcon color={theme.accent} size={16} />
-      <GolfFlagIcon color={theme.accent2} size={18} />
-      <GolfBallIcon color={theme.accent} size={16} />
-      <div className="w-8 h-px" style={{ backgroundColor: theme.accent2, opacity: 0.3 }} />
-    </div>
-  );
-}
-
-/** Lady golfer silhouette accent for cover */
-function LadyGolferAccent({ theme }: { theme: EventTheme }) {
-  return (
-    <div
-      className="absolute bottom-16 right-4 sm:right-8 pointer-events-none opacity-[0.08]"
-      aria-hidden="true"
-    >
-      <svg viewBox="0 0 120 200" className="w-16 sm:w-20" fill={theme.accent} role="presentation">
-        {/* Elegant lady golfer mid-swing silhouette */}
-        {/* Head */}
-        <ellipse cx="58" cy="18" rx="10" ry="12" />
-        {/* Hair flowing */}
-        <path d="M52,10 Q44,6 42,14 Q40,22 48,20 Z" />
-        {/* Visor */}
-        <path d="M48,12 Q58,6 68,12 L66,14 Q58,9 50,14 Z" />
-        {/* Torso */}
-        <path d="M50,28 Q46,42 44,60 L52,62 Q54,44 56,30 Z" />
-        <path d="M62,28 Q66,42 68,60 L60,62 Q58,44 56,30 Z" />
-        {/* Skirt/skort - flared elegantly */}
-        <path d="M44,60 Q38,80 32,100 Q42,98 52,96 L56,62 Z" />
-        <path d="M68,60 Q74,80 80,100 Q70,98 60,96 L56,62 Z" />
-        {/* Lead leg */}
-        <path d="M52,96 Q48,130 44,160 L40,162 Q36,168 42,168 L50,166 Q52,162 50,158 Q52,130 56,96 Z" />
-        {/* Trail leg */}
-        <path d="M60,96 Q64,120 72,150 L76,152 Q80,158 74,158 L66,156 Q64,152 66,148 Q60,120 56,96 Z" />
-        {/* Arms - backswing position */}
-        <path d="M50,32 Q36,28 28,22 L26,24 Q34,32 48,36 Z" />
-        <path d="M62,32 Q70,26 78,18 L80,20 Q72,30 64,36 Z" />
-        {/* Golf club - extended in backswing */}
-        <path d="M26,24 Q18,16 10,4 L8,4 Q6,2 8,2 L14,2 Q16,4 12,6 L26,22 Z" />
-        {/* Club head */}
-        <rect x="4" y="0" width="8" height="4" rx="1" transform="rotate(-20 8 2)" />
+      <MiniMaraca direction="left" />
+      <svg viewBox="0 0 40 8" width="40" height="8" aria-hidden="true">
+        <circle cx="6" cy="4" r="3" fill="#C41E3A" opacity="0.4" />
+        <circle cx="20" cy="4" r="3" fill="#1B8C3A" opacity="0.4" />
+        <circle cx="34" cy="4" r="3" fill="#F5D547" opacity="0.4" />
       </svg>
+      <MiniMaraca direction="right" />
     </div>
-  );
-}
-
-/** Footer accent with tiny golf elements */
-function FiestaFooterAccent({ theme }: { theme: EventTheme }) {
-  return (
-    <div
-      className="flex items-center justify-center gap-4 mb-2 pointer-events-none"
-      aria-hidden="true"
-    >
-      <GolfTeeIcon color={theme.accent2} size={14} />
-      <svg viewBox="0 0 20 6" width="20" height="6" aria-hidden="true">
-        <circle cx="3" cy="3" r="2" fill={theme.accent} opacity="0.3" />
-        <circle cx="10" cy="3" r="2" fill={theme.accent2} opacity="0.3" />
-        <circle cx="17" cy="3" r="2" fill="#2A8B7B" opacity="0.3" />
-      </svg>
-      <GolfTeeIcon color={theme.accent2} size={14} />
-    </div>
-  );
-}
-
-/* ---- Small SVG icon components ---- */
-
-function GolfBallIcon({ color, size }: { color: string; size: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
-      <circle cx="12" cy="12" r="10" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />
-      {/* Dimple pattern */}
-      <circle cx="9" cy="9" r="1" fill={color} opacity="0.2" />
-      <circle cx="15" cy="9" r="1" fill={color} opacity="0.2" />
-      <circle cx="12" cy="13" r="1" fill={color} opacity="0.2" />
-      <circle cx="8" cy="14" r="0.8" fill={color} opacity="0.15" />
-      <circle cx="16" cy="14" r="0.8" fill={color} opacity="0.15" />
-    </svg>
-  );
-}
-
-function GolfFlagIcon({ color, size }: { color: string; size: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
-      {/* Pole */}
-      <line x1="8" y1="4" x2="8" y2="22" stroke={color} strokeWidth="1.2" opacity="0.5" />
-      {/* Flag */}
-      <path d="M8,4 L18,8 L8,12 Z" fill={color} opacity="0.35" />
-      {/* Ground */}
-      <ellipse cx="8" cy="22" rx="4" ry="1" fill={color} opacity="0.2" />
-    </svg>
-  );
-}
-
-function GolfTeeIcon({ color, size }: { color: string; size: number }) {
-  return (
-    <svg viewBox="0 0 16 24" width={size} height={size} aria-hidden="true">
-      <path d="M8,6 L6,20 Q8,22 10,20 Z" fill={color} opacity="0.3" />
-      <circle cx="8" cy="4" r="3" fill="none" stroke={color} strokeWidth="1" opacity="0.3" />
-    </svg>
   );
 }

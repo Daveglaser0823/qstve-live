@@ -12,10 +12,10 @@
     "contactPhone": ""
   },
   "theme": {
-    "accent": "#C2543D",
-    "accent2": "#D4963A",
-    "background": "#FDF6EE",
-    "text": "#2B2118",
+    "accent": "#C41E3A",
+    "accent2": "#1E3A8A",
+    "background": "#FFF8DC",
+    "text": "#1a1a1a",
     "card": "#FFFFFF"
   },
   "decorations": "fiesta-fairway",
