@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "eventSlug": "2026-mar-tee-gras-exchange-day",
+    "title": "Tee Gras Exchange Day",
+    "subtitle": "A BL9 Inter-League Celebration",
+    "dateLabel": "March 2026",
+    "hostClub": "BL9 Golf League",
+    "course": "Exchange Day Venue TBD",
+    "contactName": "Denise",
+    "contactEmail": "bl9golf@gmail.com",
+    "contactPhone": "(555) 123-4567"
+  },
+  "theme": {
+    "accent": "#5b2a86",
+    "accent2": "#c9a227",
+    "background": "#f7f4ee",
+    "text": "#1f2937",
+    "card": "#fffdf8"
+  },
+  "hero": {
+    "eyebrow": "BL9 Golf League Presents",
+    "tagline": "Where great golf meets great company"
+  },
+  "quickFacts": [
+    { "label": "Event", "value": "Tee Gras Exchange Day" },
+    { "label": "Format", "value": "Shamble" },
+    { "label": "Teams", "value": "Mixed Foursomes" },
+    { "label": "Dress Code", "value": "Mardi Gras Colors" },
+    { "label": "Awards", "value": "Prizes for Top Teams" },
+    { "label": "Includes", "value": "Golf, Lunch, Fun" }
+  ],
+  "pages": [
+    {
+      "id": "welcome",
+      "title": "Welcome",
+      "layout": "text",
+      "body": [
+        "Welcome to Tee Gras Exchange Day, a celebration of friendly competition, camaraderie, and the joy of the game.",
+        "This special inter-league event brings together players from across BL9 for a day of golf, festivities, and Mardi Gras-inspired fun on the course.",
+        "Whether you are a seasoned player or joining us for the first time, we are thrilled to have you. Let the good times roll!"
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arrival and Check-In",
+      "layout": "bullets",
+      "body": [
+        "Arrive at least 30 minutes before your tee time",
+        "Check in at the registration table near the clubhouse",
+        "Pick up your welcome bag with scorecard, tees, and Mardi Gras beads",
+        "Review your team assignment and starting hole",
+        "Warm up on the practice green and driving range",
+        "Gather with your foursome at the staging area 10 minutes before shotgun start"
+      ]
+    },
+    {
+      "id": "format",
+      "title": "Tournament Format",
+      "layout": "text",
+      "body": [
+        "The format for Tee Gras Exchange Day is a Shamble. Each player tees off, the team selects the best drive, and all players play their own ball from that spot into the hole.",
+        "Teams are mixed foursomes, blending players from different BL9 chapters to encourage new connections and spirited play.",
+        "Handicaps will be applied. Full rules and local ground rules will be provided at check-in."
+      ]
+    },
+    {
+      "id": "dress-code",
+      "title": "Dress Code",
+      "layout": "bullets",
+      "body": [
+        "Mardi Gras colors encouraged: purple, green, and gold",
+        "Standard golf attire required (collared shirts, golf shoes)",
+        "Beads, fun accessories, and festive flair are welcome",
+        "Costume contest prizes for best-dressed team",
+        "Comfortable layers recommended for morning tee times"
+      ]
+    },
+    {
+      "id": "awards",
+      "title": "Awards and Prizes",
+      "layout": "bullets",
+      "body": [
+        "1st, 2nd, and 3rd place team awards",
+        "Closest to the pin on designated par 3s",
+        "Longest drive contest",
+        "Best-dressed team award",
+        "Door prizes and raffle drawings at the awards luncheon"
+      ]
+    },
+    {
+      "id": "pro-shop",
+      "title": "Pro Shop and On-Course",
+      "layout": "text",
+      "body": [
+        "The pro shop will be open before and after the round for merchandise, accessories, and last-minute supplies.",
+        "On-course beverage carts will be circulating throughout the event. Complimentary water stations are available at holes 4, 9, and 14.",
+        "A photographer will be on course capturing the day's highlights. Photos will be shared with all participants after the event."
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Helpful Links",
+      "layout": "text",
+      "body": [
+        "Find everything you need for the day below."
+      ],
+      "links": [
+        { "label": "BL9 Website", "url": "https://bl9golf.com" },
+        { "label": "Course Map", "url": "https://bl9golf.com/course-map" }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Questions?",
+      "layout": "contact",
+      "body": [
+        "Have a question about the event, your registration, or anything else? Reach out and we will be happy to help."
+      ],
+      "contact": {
+        "name": "Denise",
+        "email": "bl9golf@gmail.com",
+        "phone": "(555) 123-4567"
+      }
+    },
+    {
+      "id": "closing",
+      "title": "See You on the Course",
+      "layout": "text",
+      "body": [
+        "Thank you for being part of Tee Gras Exchange Day. We can not wait to share this celebration with you.",
+        "Play well, have fun, and laissez les bons temps rouler!"
+      ]
+    }
+  ]
+}

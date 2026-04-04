@@ -11,8 +11,9 @@ module.exports = {
       fontFamily: {
         chakra: ['Chakra Petch', 'sans-serif'],
         mono: ['Space Mono', 'monospace'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
       },
     },
   },
   plugins: [],
-}
+};

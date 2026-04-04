@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "eventSlug": "your-event-slug",
+    "title": "Event Title",
+    "subtitle": "Optional Subtitle",
+    "dateLabel": "Month Year",
+    "hostClub": "Host Club Name",
+    "course": "Course Name",
+    "contactName": "Contact Name",
+    "contactEmail": "email@example.com",
+    "contactPhone": "(555) 000-0000"
+  },
+  "theme": {
+    "accent": "#5b2a86",
+    "accent2": "#c9a227",
+    "background": "#f7f4ee",
+    "text": "#1f2937",
+    "card": "#fffdf8"
+  },
+  "hero": {
+    "image": "assets/hero.jpg",
+    "eyebrow": "League Name Presents",
+    "tagline": "Optional tagline here"
+  },
+  "quickFacts": [
+    { "label": "Date", "value": "TBD" },
+    { "label": "Format", "value": "TBD" },
+    { "label": "Teams", "value": "TBD" },
+    { "label": "Includes", "value": "TBD" }
+  ],
+  "pages": [
+    {
+      "id": "welcome",
+      "title": "Welcome",
+      "layout": "text",
+      "body": [
+        "Welcome text goes here.",
+        "Add additional paragraphs as needed."
+      ]
+    },
+    {
+      "id": "details",
+      "title": "Event Details",
+      "layout": "bullets",
+      "body": [
+        "First detail or instruction",
+        "Second detail or instruction",
+        "Third detail or instruction"
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Questions?",
+      "layout": "contact",
+      "body": [
+        "Reach out with any questions."
+      ],
+      "contact": {
+        "name": "Contact Name",
+        "email": "email@example.com",
+        "phone": "(555) 000-0000"
+      }
+    }
+  ]
+}
