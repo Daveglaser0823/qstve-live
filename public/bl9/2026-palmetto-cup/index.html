@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiesta Fairway | BL9 Palmetto Cup 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson:#B91C1C; --crimson-deep:#7F1D1D; --forest:#166534;
+    --gold:#F59E0B; --gold-warm:#D97706; --navy:#1E3A5F;
+    --cream:#FEF7EC; --cream-dark:#FDE9C9;
+    --text-dark:#2D1810; --text-body:#44342A;
+    --white:#FFFFFF; --bl9-green:#1B6B4A;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Outfit',sans-serif; color:var(--text-body); background:var(--cream); line-height:1.6; -webkit-font-smoothing:antialiased; }
+
+  /* NAV */
+  .nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(254,247,236,0.95); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(0,0,0,0.06); padding:10px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    transform:translateY(-100%); transition:transform 0.3s ease;
+  }
+  .nav.visible { transform:translateY(0); }
+  .nav-brand { display:flex; align-items:center; gap:10px; font-family:'Playfair Display',serif; font-weight:700; font-size:1rem; color:var(--crimson-deep); }
+  .nav-brand img { height:36px; width:36px; border-radius:50%; }
+  .nav-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .nav-links a { font-size:0.8rem; font-weight:500; color:var(--text-body); text-decoration:none; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--crimson); }
+
+  /* HERO */
+  .hero {
+    position:relative; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; overflow:hidden; background:var(--cream);
+    padding:0 24px;
+  }
+  .hero-top-art { position:absolute; top:0; left:0; right:0; width:100%; z-index:1; pointer-events:none; }
+  .hero-top-art img { width:100%; height:auto; display:block; }
+  .hero-bottom-art { position:absolute; bottom:0; left:0; right:0; width:100%; z-index:1; pointer-events:none; }
+  .hero-bottom-art img { width:100%; height:auto; display:block; }
+
+  .hero-logo { margin-top:clamp(160px,32vw,260px); margin-bottom:16px; z-index:2; animation:fadeInDown 0.8s ease-out; }
+  .hero-logo img {
+    width:100px; height:100px; object-fit:contain; border-radius:50%;
+    filter:drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+    background:var(--white); padding:6px; border:3px solid var(--bl9-green);
+  }
+  .hero h1 {
+    font-family:'Playfair Display',serif; font-weight:900;
+    font-size:clamp(3.5rem,10vw,7rem); color:var(--crimson-deep);
+    line-height:0.95; letter-spacing:-2px; z-index:2;
+    animation:fadeInUp 0.8s ease-out 0.2s both;
+  }
+  .hero h2 {
+    font-family:'Playfair Display',serif; font-weight:700;
+    font-size:clamp(1.5rem,4vw,2.5rem); color:var(--forest);
+    margin-top:8px; z-index:2; animation:fadeInUp 0.8s ease-out 0.4s both;
+  }
+  .hero-tagline { font-size:clamp(1rem,2.5vw,1.2rem); color:var(--text-body); margin-top:14px; font-weight:300; z-index:2; animation:fadeInUp 0.8s ease-out 0.5s both; max-width:500px; }
+  .hero-date { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2rem); color:var(--crimson); font-weight:700; margin-top:18px; z-index:2; animation:fadeInUp 0.8s ease-out 0.6s both; }
+  .hero-cta { margin-top:28px; margin-bottom:clamp(80px,15vw,160px); z-index:2; animation:fadeInUp 0.8s ease-out 0.7s both; }
+  .hero-cta a { display:inline-block; background:var(--crimson); color:var(--white); font-weight:600; font-size:1rem; padding:14px 40px; border-radius:50px; text-decoration:none; transition:all 0.3s ease; }
+  .hero-cta a:hover { background:var(--crimson-deep); transform:translateY(-2px); box-shadow:0 8px 24px rgba(185,28,28,0.3); }
+
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* DIVIDERS */
+  .fiesta-divider { width:100%; max-width:400px; margin:0 auto 24px; pointer-events:none; }
+  .fiesta-divider img { width:100%; height:auto; display:block; }
+
+  /* SECTIONS */
+  .content-section { padding:50px 24px; max-width:900px; margin:0 auto; }
+  .content-section + .content-section { padding-top:20px; }
+  .section-title {
+    font-family:'Playfair Display',serif; font-weight:900;
+    font-size:clamp(1.8rem,5vw,2.5rem); color:var(--white);
+    text-align:center; padding:16px 32px; border-radius:12px; margin-bottom:16px;
+  }
+  .section-title.crimson-bg { background:var(--crimson); }
+  .section-title.forest-bg { background:var(--forest); }
+  .section-title.navy-bg { background:var(--navy); }
+
+  /* ABOUT TEXT */
+  .about-text {
+    font-size:1.25rem; text-align:center; max-width:720px; margin:0 auto; line-height:1.8;
+  }
+  .about-text p { margin-bottom:16px; }
+  .about-text p:last-child { margin-bottom:0; }
+  .about-text strong { color:var(--text-dark); }
+
+  /* SCHEDULE */
+  .schedule-day { margin-bottom:40px; }
+  .schedule-day:last-child { margin-bottom:0; }
+  .schedule-day h3 {
+    font-family:'Playfair Display',serif; font-weight:700; font-size:1.4rem;
+    color:var(--crimson-deep); margin-bottom:16px; padding-bottom:10px;
+    border-bottom:3px solid var(--gold);
+  }
+  .schedule-item {
+    display:grid; grid-template-columns:180px 1fr; gap:12px;
+    padding:10px 0; border-bottom:1px solid rgba(44,24,16,0.08);
+    font-size:1.05rem; line-height:1.5;
+  }
+  .schedule-item:last-child { border-bottom:none; }
+  .schedule-time {
+    font-weight:600; color:var(--text-dark); white-space:nowrap;
+  }
+  .schedule-note {
+    font-size:0.95rem; font-style:italic; color:var(--text-body);
+    margin-top:16px; padding:12px 16px;
+    background:rgba(0,0,0,0.03); border-radius:8px;
+  }
+
+  /* CONTENT LISTS */
+  .content-list { list-style:none; padding:0; }
+  .content-list li { position:relative; padding:12px 0 12px 40px; font-size:1.1rem; line-height:1.5; border-bottom:1px solid rgba(44,24,16,0.08); }
+  .content-list li:last-child { border-bottom:none; }
+  .content-list li::before { content:attr(data-icon); position:absolute; left:0; top:12px; font-size:1.2rem; }
+  .content-list li strong { font-weight:600; color:var(--text-dark); }
+
+  /* LOCAL RULES */
+  .rules-section { margin-bottom:24px; }
+  .rules-section h3 {
+    font-family:'Playfair Display',serif; font-weight:700; font-size:1.15rem;
+    color:var(--crimson-deep); margin-bottom:8px;
+  }
+  .rules-section p {
+    font-size:1rem; line-height:1.7; color:var(--text-body);
+  }
+  .rules-section + .rules-section {
+    padding-top:20px; border-top:1px solid rgba(44,24,16,0.08);
+  }
+
+  /* TOURNAMENT INFO */
+  .info-block { margin-bottom:28px; }
+  .info-block h3 {
+    font-family:'Playfair Display',serif; font-weight:700; font-size:1.2rem;
+    color:var(--forest); margin-bottom:8px;
+    text-transform:uppercase; letter-spacing:1px;
+  }
+  .info-block p {
+    font-size:1.05rem; line-height:1.7;
+  }
+
+  /* CALLOUT */
+  .callout { background:var(--white); border-left:5px solid var(--gold); border-radius:0 12px 12px 0; padding:24px 28px; margin:32px 0; box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+  .callout p { font-size:1.05rem; line-height:1.6; }
+  .callout strong { color:var(--text-dark); }
+
+  /* CLOSING */
+  .closing-text {
+    font-size:1.2rem; text-align:center; max-width:680px; margin:0 auto; line-height:1.8;
+  }
+  .closing-text p { margin-bottom:16px; }
+  .closing-logo { text-align:center; margin-top:32px; }
+  .closing-logo img {
+    width:120px; height:120px; border-radius:50%;
+    background:var(--white); padding:8px; border:3px solid var(--bl9-green);
+    object-fit:contain;
+  }
+
+  /* FOOTER */
+  .site-footer { background:var(--crimson-deep); color:var(--cream); text-align:center; padding:40px 24px; margin-top:40px; }
+  .site-footer p { font-size:0.9rem; opacity:0.8; }
+  .footer-logo { margin-bottom:12px; }
+  .footer-logo img { width:60px; height:60px; border-radius:50%; background:var(--white); padding:4px; object-fit:contain; }
+  .site-footer .footer-title { font-family:'Playfair Display',serif; font-weight:700; font-size:1.4rem; margin-bottom:4px; opacity:1; }
+
+  @media (max-width:640px) {
+    .nav-links { gap:12px; }
+    .nav-links a { font-size:0.7rem; }
+    .schedule-item { grid-template-columns:1fr; gap:2px; }
+    .schedule-time { font-size:0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-brand"><img src="bl9-logo.png" alt="BL9"> Fiesta Fairway</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#format">Format</a>
+    <a href="#rules">Rules</a>
+    <a href="#register">Registration</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-top-art"><img src="fiesta-top-border.png" alt="Fiesta decorations"></div>
+  <div class="hero-logo"><img src="bl9-logo.png" alt="Belfair Ladies 9"></div>
+  <h1>Fiesta<br>Fairway</h1>
+  <h2>BL9's Palmetto Cup</h2>
+  <p class="hero-tagline">Two days of golf, food, cocktails, dinner, music, and fun.</p>
+  <p class="hero-date">April 15 &amp; 16, 2026</p>
+  <div class="hero-cta"><a href="#about">View Details</a></div>
+  <div class="hero-bottom-art"><img src="fiesta-bottom-flowers.png" alt="Floral border"></div>
+</section>
+
+<!-- ═══ PALMETTO CUP (About) ═══ -->
+<section class="content-section" id="about">
+  <div class="section-title crimson-bg">PALMETTO CUP</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+  <div class="about-text">
+    <p>The Palmetto Cup is BL9's Member-Member event for April 15 and 16, 2026.</p>
+    <p>This year's theme is <strong>Fiesta Fairway</strong>. Members are invited to dress in their favorite fiesta colors (optional) and enjoy two days of golf, food, cocktails, dinner, music, and fun.</p>
+    <p>There will be prizes awarded for the <strong>TWO BEST COSTUMES</strong> (partners or individuals) on Thursday at dinner.</p>
+  </div>
+</section>
+
+<!-- ═══ SCHEDULE OF EVENTS ═══ -->
+<section class="content-section" id="schedule">
+  <div class="section-title forest-bg">Schedule of Events</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+
+  <div class="schedule-day">
+    <h3>Day 1: Wednesday, April 15</h3>
+    <div class="schedule-item">
+      <span class="schedule-time">1:30 PM</span>
+      <span>Registration outside the golf shop; Buy your mulligan for the day and enter the raffle!</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">2:15 PM</span>
+      <span>Announcements (West Putting Green)</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">2:30 PM</span>
+      <span>Shotgun Start &ndash; West Course &ndash; Golf begins*</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">4:30 &ndash; 4:45 PM</span>
+      <span>Golf concludes; players return to the Oaks Dining Room</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">Post-Golf</span>
+      <span>Heavy appetizers and member charge bar with cocktails. First day results announced.</span>
+    </div>
+  </div>
+
+  <div class="schedule-day">
+    <h3>Day 2: Thursday, April 16</h3>
+    <div class="schedule-item">
+      <span class="schedule-time">1:30 PM</span>
+      <span>Registration outside the golf shop; Buy your mulligan for the day and buy more raffle tickets!</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">2:15 PM</span>
+      <span>Announcements (West Putting Green)</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">2:30 PM</span>
+      <span>Shotgun Start &ndash; West Course &ndash; Golf begins*</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">4:30 &ndash; 5:30 PM</span>
+      <span>Golf concludes; players have a break to go home to change into clothes or costumes for the evening.</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">5:30 PM</span>
+      <span>Dinner registration &ndash; Oaks Dining Room and member bar open</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">5:45 PM</span>
+      <span>Cocktail reception with appetizers</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">6:30 PM</span>
+      <span>Full buffet dinner followed by awards, prize distributions, and the "Best Dressed" contest winner announcement</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">7:00 PM</span>
+      <span>Awards &amp; Closing Dinner Party</span>
+    </div>
+  </div>
+
+  <div class="schedule-note">
+    *See pairings &ndash; Format: if front 9 is Best Ball, the back 9 is Scramble format.
+  </div>
+</section>
+
+<!-- ═══ TOURNAMENT INFORMATION ═══ -->
+<section class="content-section" id="format">
+  <div class="section-title navy-bg">Tournament Information</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+
+  <div class="info-block">
+    <h3>Format</h3>
+    <p>The competition will be played in two formats, consisting of Best Ball and Scramble. Best Ball will be played on West Course front 9 holes, with a Scramble format being played on back nine holes of West Course.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Handicap</h3>
+    <p>All players are required to have an attested USGA Handicap Index. Handicap indexes will be taken from the April 7 index.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Ties</h3>
+    <p>In the event there is a tie for the Overall Championship, TBD.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Prizes</h3>
+    <p>Credit book will be awarded to the Overall Net Champion in first, second, and third place, as well as Closest to the Pin on holes #3 and #16 for both days of the event.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Mulligans</h3>
+    <p>There is one mulligan per player, per day with purchase of a $5 mulligan at registration. A mulligan is used to re-do a shot. It is played from the same spot that a player hit their previous stroke, looking to re-do the prior shot without penalty.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Raffle</h3>
+    <p>Players can purchase a raffle ticket for $5 or 3 tickets for $15, during 1:30 PM &ndash; 2:15 PM registration times daily.</p>
+    <p style="margin-top:8px;">Raffle item is Blue Tee's Playmaker GPS Range Finder Watch, retail $175. No limit on purchase of tickets.</p>
+    <div style="text-align:center; margin-top:16px;"><img src="playmaker-watch.png" alt="Blue Tee Playmaker GPS Watch" style="width:130px; height:auto; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.12);"></div>
+  </div>
+</section>
+
+<!-- ═══ ELIGIBILITY & NOTICES ═══ -->
+<section class="content-section" id="register">
+  <div class="section-title crimson-bg">Eligibility &amp; Notices</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+  <ul class="content-list">
+    <li data-icon="✅">All BL9 members are encouraged to play</li>
+    <li data-icon="📋">To place or win, both partners must have played in at least one (or 20%) of BL9's 2026 events</li>
+    <li data-icon="⛳">Both partners must also have an established handicap leading up to the event in order to place or win</li>
+  </ul>
+
+  <div class="callout" style="border-left-color:var(--crimson); margin-top:32px;">
+    <p>⚠️ <strong>Cancellation Policy:</strong> Cancellations less than 72 hours prior to the event result in a charge of $35 or $55 per person for food, and $10 for golf.</p>
+  </div>
+
+  <div class="callout" style="margin-top:16px;">
+    <p>📅 <strong>Sign up opens:</strong> Wednesday, 3/18/26 at 7:00 AM on ForeTees</p>
+    <p style="margin-top:6px;">⏰ <strong>Sign up ends:</strong> Sunday, 4/5/26 at 5:00 PM</p>
+    <p style="margin-top:6px;">👯 <strong>Sign up with a partner,</strong> or the Pro Shop can help find one</p>
+    <p style="margin-top:6px;">🍷 <strong>Dinner only:</strong> Available on ForeTees for $35++ per person</p>
+  </div>
+</section>
+
+<!-- ═══ LOCAL RULES ═══ -->
+<section class="content-section" id="rules">
+  <div class="section-title forest-bg">Local Rules</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+
+  <div class="rules-section">
+    <h3>Out of Bounds</h3>
+    <p>Out of Bounds is defined by course side edge of white stakes and/or lines, boundary fences, and the course-side edges of roads bordering the course.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Penalty Areas</h3>
+    <p>Yellow Penalty Areas are marked by yellow stakes and/or lines. Red Penalty Areas are marked by red stakes and/or lines. When both stakes and lines are present, the lines define the margin of the penalty area.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Immovable Obstructions Close to Putting Green</h3>
+    <p>Relief from interference by an immovable obstruction may be taken under Rule 16.1. In addition, if the player's ball lies off the putting green and in the general area cut to fairway height and an immovable obstruction within two club lengths of the putting green and within two club lengths of the ball interferes on the line of play, the player may take relief under Rule 16.1 Model Local Rule F-5.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Provisional Ball</h3>
+    <p>If a player is unsure as to if their ball crossed the penalty area, they may declare a provisional ball from the teeing area. If the player's ball did not in fact clear the penalty area, the competitor may play the provisional ball and record the appropriate penalty strokes under Local Rule B-3.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Sandy Areas</h3>
+    <p>The West Course was designed with sandy areas on holes 2, 3, 13 &amp; 15. These sanded areas contain grass or ornamental shrubs and may also be defined by off-white colored sand. These areas are considered general area and there is no penalty for grounding a club in these sanded areas. For consideration of fellow golfers, players may rake their footprints or smooth the surface with a club or rake.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Immovable Obstruction</h3>
+    <p>Players may take relief for stance and swing (not line of sight) using the designated drop zone.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Roads and Paths</h3>
+    <p>All non-paved paths are considered an integral part of the course. Concrete paths are considered immovable obstructions; players may take relief under Rule 16.1. Crush and Run Path (Hole #17 West): Golfers are permitted relief from the sand path running in front of the #17 green. Players may take their nearest point of relief one club length no nearer the hole that gives complete relief from the path.</p>
+  </div>
+
+  <div class="rules-section">
+    <h3>Lightning &amp; Dangerous Weather</h3>
+    <p>One long siren blast: play is suspended immediately. Three intermittent siren blasts: resume play. Shelters on West are located at Hole #5, Hole #13, and the clubhouse.</p>
+  </div>
+
+  <div class="callout" style="margin-top:24px;">
+    <p>⛳ Please repair your ball marks and fill all divots with sand.</p>
+  </div>
+</section>
+
+<!-- ═══ CLOSING ═══ -->
+<section class="content-section">
+  <div class="section-title navy-bg">BL9 Palmetto Cup</div>
+  <div class="fiesta-divider"><img src="fiesta-divider-small.png" alt=""></div>
+  <div class="closing-text">
+    <p>The BL9 Palmetto Cup is a long-standing tournament and tradition of 12+ years to award the best playing pair with the Annual Palmetto Cup Award.</p>
+    <p>Although this is tournament play and competition, it is also in the BL9 spirit and culture of fairness with fun!</p>
+    <p><strong>Have a great day of play and see you nightly for food and fun!</strong></p>
+  </div>
+  <div class="closing-logo">
+    <img src="bl9-logo.png" alt="Belfair Ladies 9">
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-logo"><img src="bl9-logo.png" alt="BL9"></div>
+  <p class="footer-title">Fiesta Fairway 2026</p>
+  <p>BL9's Palmetto Cup at Belfair</p>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  new IntersectionObserver(([e])=>nav.classList.toggle('visible',!e.isIntersecting),{threshold:0.1}).observe(document.querySelector('.hero'));
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth',block:'start'});});});
+  const sObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
+  document.querySelectorAll('.content-section').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(24px)';s.style.transition='opacity 0.6s ease, transform 0.6s ease';sObs.observe(s);});
+</script>
+</body>
+</html>

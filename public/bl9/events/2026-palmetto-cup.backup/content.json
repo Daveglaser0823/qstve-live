@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "eventSlug": "2026-palmetto-cup",
+    "title": "Fiesta Fairway",
+    "subtitle": "BL9's Palmetto Cup",
+    "dateLabel": "April 15 & 16, 2026",
+    "hostClub": "Belfair",
+    "course": "",
+    "theme": "fiesta-fairway",
+    "contactName": "",
+    "contactEmail": "",
+    "contactPhone": ""
+  },
+  "theme": {
+    "accent": "#C41E3A",
+    "accent2": "#1E3A8A",
+    "background": "#FFF8DC",
+    "text": "#1a1a1a",
+    "card": "#FFFFFF"
+  },
+  "decorations": "fiesta-fairway",
+  "hero": {
+    "image": "",
+    "eyebrow": "BL9 Golf League",
+    "tagline": "Our two day member member event with golf, dinner, and great prizes."
+  },
+  "quickFacts": [
+    { "label": "Dates", "value": "April 15 & 16, 2026" },
+    { "label": "Start Time", "value": "2:30 PM Shotgun" },
+    { "label": "Cost", "value": "$65++ per person" },
+    { "label": "Sign Up Opens", "value": "Wednesday, 3/18/26 at 7:00 AM on ForeTees" },
+    { "label": "Sign Up Ends", "value": "Sunday, 4/5/26 at 5:00 PM" },
+    { "label": "Dinner Only", "value": "$35++ per person on Thursday at 5:30 PM" }
+  ],
+  "pages": [
+    {
+      "id": "welcome",
+      "title": "Palmetto Cup",
+      "layout": "text",
+      "body": [
+        "The Palmetto Cup is BL9's Member-Member event for April 15 and 16, 2026.",
+        "This year's theme is Fiesta Fairway. Members are invited to dress in their favorite fiesta colors, optional, and enjoy two days of golf, food, cocktails, dinner, music, and fun."
+      ]
+    },
+    {
+      "id": "format",
+      "title": "Event Format",
+      "layout": "bullets",
+      "body": [
+        "2:30 PM shotgun start",
+        "Front Nine: Best Ball format",
+        "Back Nine: Scramble format",
+        "Mulligans sold both days for $5 via member charge"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Food, Drinks & Festivities",
+      "layout": "bullets",
+      "body": [
+        "Day 1, Oaks Dining Room: Heavy appetizers and cocktails after golf",
+        "Day 2, Oaks Dining Room at 5:30 PM: Appetizers, buffet dinner, dessert, music and fun",
+        "Prize for most creative outfits, awarded with golf prizes",
+        "Dinner-only registration available for members unable to golf"
+      ]
+    },
+    {
+      "id": "signup",
+      "title": "Registration",
+      "layout": "bullets",
+      "body": [
+        "Sign up begins on ForeTees Wednesday, 3/18/26 at 7:00 AM",
+        "Sign up ends Sunday, 4/5/26 at 5:00 PM",
+        "Sign up with a partner, or the Pro Shop can help find one",
+        "Dinner only registration is available on ForeTees for $35++ per person"
+      ]
+    },
+    {
+      "id": "eligibility",
+      "title": "Eligibility & Notices",
+      "layout": "bullets",
+      "body": [
+        "All BL9 members are encouraged to play",
+        "To be eligible to place or win in the Palmetto Cup, both partners must have played in at least two, or 20%, of BL9's 2026 events",
+        "Both partners must also have an established handicap leading up to the event"
+      ]
+    },
+    {
+      "id": "cancellation",
+      "title": "Cancellation Policy",
+      "layout": "text",
+      "body": [
+        "Cancellations less than 72 hours prior to the event result in a charge of $35 or $55 per person for food, and $10 for golf."
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Questions",
+      "layout": "contact",
+      "contact": {
+        "name": "",
+        "email": "",
+        "phone": ""
+      },
+      "body": [
+        "Additional details, pairings, and event-day instructions can be added later as they become available."
+      ]
+    }
+  ]
+}
