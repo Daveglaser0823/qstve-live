@@ -69,7 +69,7 @@ export default function QuickFacts({ facts, theme, decorations }: QuickFactsProp
                   >
                     {fact.label}
                   </p>
-                  <p className="text-lg sm:text-xl font-bold" style={{ color: colors.text }}>
+                  <p className="text-xl sm:text-2xl font-bold" style={{ color: colors.text }}>
                     {fact.value}
                   </p>
                 </div>
@@ -85,12 +85,12 @@ export default function QuickFacts({ facts, theme, decorations }: QuickFactsProp
                 }}
               >
                 <p
-                  className="text-xs tracking-[0.2em] uppercase mb-2 font-medium"
+                  className="text-sm tracking-[0.2em] uppercase mb-2 font-medium"
                   style={{ color: theme.accent }}
                 >
                   {fact.label}
                 </p>
-                <p className="text-lg font-semibold">{fact.value}</p>
+                <p className="text-xl font-semibold">{fact.value}</p>
               </div>
             );
           })}
