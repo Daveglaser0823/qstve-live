@@ -1,0 +1,1325 @@
+<title>NMI Org Intelligence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap');
+
+  /* Layout: full-width document with sticky nav, collapsible sections, and a visual org tree */
+  :root {
+    --bg: #FAFAF8;
+    --bg-surface: #FFFFFF;
+    --bg-muted: #F0EFEC;
+    --fg: #1A1A18;
+    --fg-secondary: #5C5B56;
+    --fg-tertiary: #8A8983;
+    --accent: #1B6B4A;
+    --accent-light: #E8F5EE;
+    --accent-dark: #145236;
+    --border: #E2E1DC;
+    --border-light: #EEEDEA;
+    --highlight: #D4A853;
+    --highlight-light: #FFF8E7;
+    --danger: #B44D3B;
+    --info: #3B6CB4;
+    --info-light: #EBF0F9;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141413;
+      --bg-surface: #1E1E1C;
+      --bg-muted: #262624;
+      --fg: #E8E7E3;
+      --fg-secondary: #A9A8A3;
+      --fg-tertiary: #7A7974;
+      --accent: #4ABA82;
+      --accent-light: #1A2E23;
+      --accent-dark: #6FD4A0;
+      --border: #333330;
+      --border-light: #2A2A28;
+      --highlight: #E4BE6A;
+      --highlight-light: #2A2517;
+      --danger: #D4715F;
+      --info: #6B9FE0;
+      --info-light: #1A2233;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141413;
+    --bg-surface: #1E1E1C;
+    --bg-muted: #262624;
+    --fg: #E8E7E3;
+    --fg-secondary: #A9A8A3;
+    --fg-tertiary: #7A7974;
+    --accent: #4ABA82;
+    --accent-light: #1A2E23;
+    --accent-dark: #6FD4A0;
+    --border: #333330;
+    --border-light: #2A2A28;
+    --highlight: #E4BE6A;
+    --highlight-light: #2A2517;
+    --danger: #D4715F;
+    --info: #6B9FE0;
+    --info-light: #1A2233;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    padding-inline: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    line-height: 1.25;
+  }
+
+  .hero {
+    padding: 48px 0 32px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--accent);
+  }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: var(--fg-secondary);
+    margin: 0 0 20px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    font-size: 0.85rem;
+    color: var(--fg-tertiary);
+  }
+  .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-tabs {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    margin: 0 -16px;
+    padding: 0 16px;
+    overflow-x: auto;
+    display: flex;
+    gap: 4px;
+  }
+  .nav-tabs button {
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--fg-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .nav-tabs button:hover { color: var(--fg); }
+  .nav-tabs button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .tab-content { display: none; padding-block: 24px; }
+  .tab-content.active { display: block; }
+
+  section { margin-bottom: 40px; }
+  section > h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  section > h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 24px 0 12px;
+    color: var(--fg-secondary);
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .kpi .value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .label {
+    font-size: 0.75rem;
+    color: var(--fg-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* Org chart tree */
+  .org-tree {
+    overflow-x: auto;
+    padding: 16px 0;
+  }
+  .org-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .org-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 160px;
+    max-width: 220px;
+    position: relative;
+    transition: box-shadow 0.15s;
+  }
+  .org-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .org-card.ceo {
+    border-color: var(--accent);
+    border-width: 2px;
+    background: var(--accent-light);
+  }
+  .org-card.founder {
+    border-color: var(--highlight);
+    background: var(--highlight-light);
+  }
+  .org-card .name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+  }
+  .org-card .title {
+    font-size: 0.75rem;
+    color: var(--fg-secondary);
+    line-height: 1.3;
+  }
+  .org-card .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .badge-current {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .badge-former {
+    background: var(--bg-muted);
+    color: var(--fg-tertiary);
+  }
+  .badge-founder {
+    background: var(--highlight-light);
+    color: var(--highlight);
+  }
+
+  .org-children {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0;
+    flex-wrap: wrap;
+    position: relative;
+    padding-top: 24px;
+  }
+  .org-children::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+  }
+  .org-children > .org-node {
+    position: relative;
+    padding-top: 24px;
+  }
+  .org-children > .org-node::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+  }
+
+  /* Person cards (detailed) */
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .person-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .person-card .pc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .person-card .pc-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .person-card .pc-title {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .person-card .pc-meta {
+    font-size: 0.8rem;
+    color: var(--fg-tertiary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .person-card .pc-bio {
+    font-size: 0.82rem;
+    color: var(--fg-secondary);
+    line-height: 1.5;
+  }
+  .person-card .pc-prev {
+    font-size: 0.78rem;
+    color: var(--fg-tertiary);
+    padding-top: 4px;
+    border-top: 1px solid var(--border-light);
+  }
+  .person-card .pc-prev strong {
+    color: var(--fg-secondary);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item.acquisition::before { background: var(--info); }
+  .timeline-item.investment::before { background: var(--highlight); }
+  .timeline-item.departure::before { background: var(--danger); }
+  .timeline-year {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .timeline-item.acquisition .timeline-year { color: var(--info); }
+  .timeline-item.investment .timeline-year { color: var(--highlight); }
+  .timeline-item.departure .timeline-year { color: var(--danger); }
+  .timeline-event {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .timeline-detail {
+    font-size: 0.8rem;
+    color: var(--fg-secondary);
+    line-height: 1.5;
+  }
+
+  /* Tables */
+  .data-table-wrap {
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+  }
+  th {
+    text-align: left;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    color: var(--fg-secondary);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--bg-muted); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .tag-green { background: var(--accent-light); color: var(--accent); }
+  .tag-yellow { background: var(--highlight-light); color: var(--highlight); }
+  .tag-blue { background: var(--info-light); color: var(--info); }
+
+  .location-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .location-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .location-card .loc-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .location-card .loc-addr {
+    font-size: 0.8rem;
+    color: var(--fg-secondary);
+  }
+  .location-card .loc-note {
+    font-size: 0.75rem;
+    color: var(--fg-tertiary);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  .dept-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .dept-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .dept-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .glassdoor-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .glassdoor-bar .gb-label {
+    width: 180px;
+    font-size: 0.8rem;
+    color: var(--fg-secondary);
+    flex-shrink: 0;
+  }
+  .glassdoor-bar .gb-track {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-muted);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 200px;
+  }
+  .glassdoor-bar .gb-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--accent);
+  }
+  .glassdoor-bar .gb-val {
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    width: 36px;
+    text-align: right;
+  }
+
+  .note-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.84rem;
+    color: var(--fg-secondary);
+    margin: 16px 0;
+  }
+
+  @media (max-width: 600px) {
+    .person-grid { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .org-children { flex-direction: column; align-items: center; }
+    .nav-tabs button { padding: 10px 12px; font-size: 0.8rem; }
+  }
+</style>
+
+<div class="hero">
+  <h1>NMI Organizational Intelligence</h1>
+  <p class="subtitle">Network Merchants, LLC &mdash; Embedded Payments Infrastructure</p>
+  <div class="hero-meta">
+    <span>Founded 2001 &middot; Schaumburg, IL</span>
+    <span>~640 employees</span>
+    <span>$502B annual volume</span>
+    <span>6,500+ transactions</span>
+    <span>38 countries</span>
+  </div>
+</div>
+
+<nav class="nav-tabs" role="tablist">
+  <button class="active" data-tab="overview" role="tab">Overview</button>
+  <button data-tab="orgchart" role="tab">Org Chart</button>
+  <button data-tab="people" role="tab">People Directory</button>
+  <button data-tab="timeline" role="tab">Timeline</button>
+  <button data-tab="locations" role="tab">Locations</button>
+  <button data-tab="departments" role="tab">Departments</button>
+  <button data-tab="glassdoor" role="tab">Glassdoor</button>
+</nav>
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="tab-content active" id="tab-overview">
+  <section>
+    <div class="kpi-row">
+      <div class="kpi"><div class="value">$502B</div><div class="label">Annual Volume</div></div>
+      <div class="kpi"><div class="value">6.5B+</div><div class="label">Transactions/Yr</div></div>
+      <div class="kpi"><div class="value">6,000+</div><div class="label">Channel Partners</div></div>
+      <div class="kpi"><div class="value">1.2M+</div><div class="label">Active Merchants</div></div>
+      <div class="kpi"><div class="value">~640</div><div class="label">Employees</div></div>
+      <div class="kpi"><div class="value">~$75M</div><div class="label">Est. Revenue</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Company Overview</h2>
+    <p style="font-size:0.92rem;color:var(--fg-secondary);max-width:75ch">NMI is a global embedded payments infrastructure company selling exclusively through channel partners&mdash;ISOs, ISVs, PayFacs, VARs, and SaaS providers. The platform enables partners to deliver seamless payment experiences under their own brand. NMI provides a processor-agnostic gateway with 200+ active processor connections, terminal management, merchant onboarding, underwriting, risk management, CRM (IRIS CRM), and embedded lending (NMI Business Capital).</p>
+  </section>
+
+  <section>
+    <h2>Ownership &amp; Investors</h2>
+    <p style="font-size:0.88rem;color:var(--fg-secondary);margin-bottom:12px">NMI is privately held, backed by three PE/VC firms. Valued at approximately <strong>$1.55 billion</strong> as of the 2021 Insight Partners investment.</p>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Investor</th><th>Role</th><th>Entry</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Francisco Partners</strong></td><td>Lead investor (~40%)</td><td>2017</td><td><span class="tag tag-green">Active</span></td></tr>
+          <tr><td><strong>Great Hill Partners</strong></td><td>Significant shareholder, board seat</td><td>2014</td><td><span class="tag tag-green">Active</span></td></tr>
+          <tr><td><strong>Insight Partners</strong></td><td>Strategic growth investor (~40%)</td><td>2021</td><td><span class="tag tag-green">Active</span></td></tr>
+          <tr><td>Bregal Sagemount</td><td>Growth investor</td><td>2013</td><td><span class="tag tag-yellow">Exited 2017</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Acquisitions</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Target</th><th>Location</th><th>Strategic Rationale</th><th>Key People</th></tr></thead>
+        <tbody>
+          <tr><td>Mar 2018</td><td><strong>Creditcall</strong></td><td>Bristol, UK</td><td>EMV/omnichannel, card-present, 100+ device certifications</td><td>Lars Pedersen (CEO), Rob Fox (Sales)</td></tr>
+          <tr><td>Feb 2021</td><td><strong>USAePay</strong></td><td>Glendale, CA</td><td>Omnichannel POS, e-commerce, $100B+ combined volume</td><td>Ben Goretsky (Co-Founder &rarr; SVP), Alex Goretsky (Co-Founder/CFO), Tim McEwen (CTO &rarr; SVP Eng)</td></tr>
+          <tr><td>Jan 2022</td><td><strong>IRIS CRM</strong></td><td>Brooklyn, NY</td><td>Merchant CRM, lead mgmt, TurboApp onboarding, residuals</td><td>Dimitri Akhrin (Founder/President, stayed on)</td></tr>
+          <tr><td>Dec 2022</td><td><strong>Agreement Express</strong> (payments div.)</td><td>Vancouver, CA</td><td>Underwriting, risk monitoring, KYC/AML, fraud screening</td><td>Darryl Cumming (Dir. Product Mgmt), Carmen Thoms</td></tr>
+          <tr><td>Sep 2023</td><td><strong>Anovia Payments</strong></td><td>Schaumburg, IL</td><td>Buyout/LBO, 201-500 employees</td><td>&mdash;</td></tr>
+          <tr><td>Oct 2023</td><td><strong>Sphere Commercial Div.</strong></td><td>Irving, TX</td><td>Underwriting, risk mgmt, direct merchant account creation</td><td>Tom Bannon (COO/Pres &rarr; SVP Partner Monetization)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== ORG CHART ==================== -->
+<div class="tab-content" id="tab-orgchart">
+  <section>
+    <h2>Executive Org Chart</h2>
+    <p style="font-size:0.84rem;color:var(--fg-tertiary);margin-bottom:20px">Current leadership as of Oct 2026. All C-suite report to CEO. Scroll horizontally on mobile.</p>
+
+    <div class="org-tree">
+      <!-- Board Level -->
+      <div class="org-node">
+        <div class="org-card" style="background:var(--bg-muted);border-style:dashed;min-width:240px">
+          <div class="name">Board of Directors</div>
+          <div class="title">Peter Christodoulo (Chair, Francisco Partners)<br>Nick Cayer (Great Hill Partners)<br>Byron Lichtenstein (Insight Partners)<br>Jim McKenzie (Co-Founder)</div>
+        </div>
+
+        <div class="org-children">
+          <div class="org-node">
+            <div class="org-card ceo">
+              <div class="name">Steven Pinado</div>
+              <div class="title">Chief Executive Officer</div>
+              <div class="badge badge-current">Sep 2025&ndash;Present</div>
+            </div>
+
+            <div class="org-children" style="gap:6px">
+              <!-- C-Suite Row -->
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Scott Hart, CFA</div>
+                  <div class="title">Chief Financial Officer</div>
+                  <div class="badge badge-current">Jun 2022</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Phillip Goericke</div>
+                  <div class="title">Chief Technology Officer</div>
+                  <div class="badge badge-current">CTO Jan 2024</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Tiffany Johnson</div>
+                  <div class="title">Chief Product Officer</div>
+                  <div class="badge badge-current">Apr 2023</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Robert Hoblit</div>
+                  <div class="title">Chief Revenue Officer</div>
+                  <div class="badge badge-current">Aug 2022</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Kate Hampton</div>
+                  <div class="title">Chief Strategy Officer</div>
+                  <div class="badge badge-current">~2023</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Peter Galvin</div>
+                  <div class="title">Chief Marketing Officer</div>
+                  <div class="badge badge-current">Apr 2022</div>
+                </div>
+              </div>
+              <div class="org-node">
+                <div class="org-card">
+                  <div class="name">Casey Jameson</div>
+                  <div class="title">Chief Talent Officer</div>
+                  <div class="badge badge-current">Jan 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>SVP / VP Layer &amp; Key Reports</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Title</th><th>Reports To (Inferred)</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Kyle Pexton</strong></td><td>President</td><td>CEO</td><td>Promoted Jul 2020 from CFO; leads commercial &amp; biz dev</td></tr>
+          <tr><td><strong>Nick Starai</strong></td><td>Co-Founder &amp; Chief Strategy/Innovation Officer</td><td>CEO</td><td>Co-founded NMI 2001; strategic advisor &amp; enterprise clients</td></tr>
+          <tr><td><strong>Matt Schmidgall</strong></td><td>Co-Founder &amp; CTO Emeritus</td><td>CEO</td><td>Original author of NMI platform software</td></tr>
+          <tr><td><strong>TJ Fund</strong></td><td>Former SVP &amp; General Counsel</td><td>CEO</td><td>2019&ndash;2022; legal, M&amp;A. Now EVP at 4Life Research</td></tr>
+          <tr><td><strong>Matt Miller</strong></td><td>SVP of Sales</td><td>CRO</td><td>Appointed Oct 2019; 19+ yrs tech/software. Exec committee</td></tr>
+          <tr><td><strong>Tom Bannon</strong></td><td>SVP, Partner Monetization</td><td>CRO/CEO</td><td>Joined from Sphere acq. (Oct 2023), former Sphere COO/Pres</td></tr>
+          <tr><td><strong>Ben Goretsky</strong></td><td>SVP, Strategic Alliances</td><td>CRO/CEO</td><td>Co-founded USAePay 1998; transitioned post-acquisition</td></tr>
+          <tr><td><strong>Tim McEwen</strong></td><td>SVP of Engineering</td><td>CTO</td><td>Former CTO at USAePay; joined via acquisition</td></tr>
+          <tr><td><strong>Jerry Renkowski</strong></td><td>VP, Partner Experience</td><td>CRO</td><td>Leads Sales Eng, Partner Launch, Success, Integration, Support</td></tr>
+          <tr><td><strong>Rich Swiderski</strong></td><td>VP, Business Development</td><td>CRO</td><td>16+ yrs at NMI; Sales Leader of the Year 2020-22</td></tr>
+          <tr><td><strong>Rob Fox</strong></td><td>VP &amp; Head of Sales, UK &amp; Europe</td><td>CRO</td><td>Based in Bristol; came via Creditcall. ETA recognition</td></tr>
+          <tr><td><strong>Dimitri Akhrin</strong></td><td>President, IRIS CRM Division</td><td>CEO/CPO</td><td>Founded IRIS CRM 2010; stayed on post-acquisition</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Director Layer &amp; Specialists</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Title</th><th>Function</th><th>Location</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Spero Langaditis</strong></td><td>Director, AI &amp; Automation</td><td>Product/Engineering</td><td>&mdash;</td></tr>
+          <tr><td><strong>Dr. Nigel Jewell</strong></td><td>Director, Product Solutions</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Melissa Peirano</strong></td><td>Director, Product &ndash; Payment Gateway</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Darryl Cumming</strong></td><td>Director, Product Management (Agreement Express)</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Joshua Cox</strong></td><td>Director, Bank Channel / Account Management</td><td>Sales</td><td>Spanish Fork, UT</td></tr>
+          <tr><td><strong>Andy Milz</strong></td><td>Director, Partner Launch</td><td>Partner Ops</td><td>&mdash;</td></tr>
+          <tr><td><strong>Ivan Szabo</strong></td><td>Director, Web Marketing</td><td>Marketing</td><td>&mdash;</td></tr>
+          <tr><td><strong>Chantal Dalton</strong></td><td>Director, Marketing (Lifecycle/Channel)</td><td>Marketing</td><td>&mdash;</td></tr>
+          <tr><td><strong>Alexandra Jensen-Martinez</strong></td><td>Director, Operations</td><td>Operations</td><td>&mdash;</td></tr>
+          <tr><td><strong>Cassie Boutelle</strong></td><td>Head of Payment Processing Products</td><td>Product</td><td>Sarasota, FL</td></tr>
+          <tr><td><strong>Michelle Kosir</strong></td><td>Head of Product Marketing</td><td>Marketing</td><td>&mdash;</td></tr>
+          <tr><td><strong>Emily Pearce</strong></td><td>Senior Manager, People &amp; Culture</td><td>HR</td><td>&mdash;</td></tr>
+          <tr><td><strong>Sheena Miles, MSc</strong></td><td>Manager, AI Strategy &amp; Implementation</td><td>AI/Engineering</td><td>Bristol, UK</td></tr>
+          <tr><td><strong>Naomi Mastera</strong></td><td>Business Development Manager &ndash; ISV</td><td>Sales</td><td>Los Angeles, CA</td></tr>
+          <tr><td><strong>Danielle Betters</strong></td><td>Partner Launch Manager</td><td>Partner Ops</td><td>&mdash;</td></tr>
+          <tr><td><strong>Abraham Jimenez</strong></td><td>Senior Partner Training Manager</td><td>Partner Ops</td><td>&mdash;</td></tr>
+          <tr><td><strong>Kanan Keeney</strong></td><td>Senior Product Manager (In-Person Payments)</td><td>Product</td><td>Bristol, UK</td></tr>
+          <tr><td><strong>Haley Barnes</strong></td><td>Senior Product Manager (Embedded/ISV)</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Lisa Lloyd</strong></td><td>Senior Product Manager (Payment Gateway)</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Jaron Ruckman</strong></td><td>Product Manager (IRIS CRM)</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Tobias Ostwald</strong></td><td>Technical Product Manager (PMP)</td><td>Product</td><td>&mdash;</td></tr>
+          <tr><td><strong>Barbora Spacilova</strong></td><td>Product Data &amp; Insights Manager</td><td>Product/Data</td><td>Bristol, UK</td></tr>
+          <tr><td><strong>MariaSol R.</strong></td><td>Senior Support Manager</td><td>Support</td><td>&mdash;</td></tr>
+          <tr><td><strong>Matt Birchler</strong></td><td>Product Designer</td><td>Design</td><td>&mdash;</td></tr>
+          <tr><td><strong>Landon Pierce</strong></td><td>Enterprise Sales Manager (MRM)</td><td>Sales</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PEOPLE DIRECTORY ==================== -->
+<div class="tab-content" id="tab-people">
+  <section>
+    <h2>Current Executive Team</h2>
+    <div class="person-grid">
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Steven Pinado</div><div class="pc-title">Chief Executive Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Sep 2025&ndash;Present</span><span>Bucks County, PA</span></div>
+        <div class="pc-bio">~30 years in fintech, embedded payments, and scaling growth-stage businesses. MBA from Tuck School of Business at Dartmouth; BA from Morehouse College. Began career in investment banking at Salomon Brothers.</div>
+        <div class="pc-prev"><strong>Prior:</strong> Partner at Radian Capital (led operating team) &rarr; President of Billtrust (steered IPO &amp; sale) &rarr; Group CEO at Jonas Software / Constellation Payments &rarr; Roles at Advanta, NextCard, Electronic Data Systems</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Kyle Pexton</div><div class="pc-title">President</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>CFO 2014; President Jul 2020</span></div>
+        <div class="pc-bio">Leads commercial and business development efforts. Joined NMI alongside CEO Roy Banks in 2014 with the Great Hill Partners investment.</div>
+        <div class="pc-prev"><strong>Prior:</strong> CFO at Accelerated Payment Technologies (APT) &rarr; CFO at Authorize.Net</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Scott Hart, CFA</div><div class="pc-title">Chief Financial Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Jun 2022</span><span>New York City</span></div>
+        <div class="pc-bio">20+ years as financial operator in tech-enabled growth companies. BS from Southern Methodist University. CFA Charterholder. Placed by Bespoke Partners.</div>
+        <div class="pc-prev"><strong>Prior:</strong> CFO at Venn LocalZone &rarr; Head of Finance at Kaseya &rarr; Senior finance roles at PE-backed IT services, cloud hosting, telecom cos.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Phillip Goericke</div><div class="pc-title">Chief Technology Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>SVP Eng mid-2022; CTO Jan 2024</span></div>
+        <div class="pc-bio">15+ years in software development. BS from University of Texas at Arlington. Oversees engineering team, technology vision, R&amp;D.</div>
+        <div class="pc-prev"><strong>Prior:</strong> VP of Product Engineering at Alkami Technology (scaled 160 engineers) &mdash; advanced from Sr. Software Engineer to Lead Dev to Manager to Director to VP</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Tiffany Johnson</div><div class="pc-title">Chief Product Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Apr 2023</span><span>Phoenix, AZ</span></div>
+        <div class="pc-bio">15+ years product leadership in payments/fintech. BS &amp; MBA from Arizona State (W.P. Carey). Helped launch AppleCash, Uber Instant Pay, Walmart Family Debit. 9 direct reports; doubled product team after Sphere acquisition.</div>
+        <div class="pc-prev"><strong>Prior:</strong> SVP of Product at Green Dot (8 yrs) &rarr; Head of Product NA at Railsr/Railsbank (2 yrs)</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Robert Hoblit</div><div class="pc-title">Chief Revenue Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Aug 2022</span><span>San Diego area</span></div>
+        <div class="pc-bio">20+ years in software/tech sales leadership. MBA from UCLA (2002-2004).</div>
+        <div class="pc-prev"><strong>Prior:</strong> CRO at DigiCert (transformed global sales) &rarr; Senior leadership at Symantec Website Security &rarr; Engagement Manager at McKinsey &amp; Company</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Kate Hampton</div><div class="pc-title">Chief Strategy Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>VP Product/GM UK Apr 2019; CSO ~2023</span></div>
+        <div class="pc-bio">15-18 years in payments acceptance. Oversees strategy, corporate development, and M&amp;A.</div>
+        <div class="pc-prev"><strong>Prior:</strong> SVP of Product &ndash; Payments at Entrata (implemented pay-fac model) &rarr; Corporate Finance at Global Payments, Accelerated Payment Technologies, CAM Commerce</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Peter Galvin</div><div class="pc-title">Chief Marketing Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Apr 2022</span></div>
+        <div class="pc-bio">20+ year veteran of global technology organizations. Drives go-to-market strategy for NMI and IRIS CRM.</div>
+        <div class="pc-prev"><strong>Prior:</strong> CMO at Entrust &amp; Proofpoint &rarr; Chief Strategy &amp; Marketing Officer at nCipher/Thales e-Security &rarr; Senior marketing at Openwave, Inktomi (Yahoo), Oracle</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Casey Jameson</div><div class="pc-title">Chief Talent Officer</div></div><span class="tag tag-green">Current</span></div>
+        <div class="pc-meta"><span>Jan 2024</span></div>
+        <div class="pc-bio">Leads talent management, strategic workforce planning, people development, and organizational culture.</div>
+        <div class="pc-prev"><strong>Prior:</strong> Chief People Officer at StoryBuilt &amp; Stack Sports &rarr; Head of HR at DrillingInfo</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Nick Starai</div><div class="pc-title">Co-Founder &amp; Chief Strategy Officer</div></div><span class="tag tag-yellow">Founder</span></div>
+        <div class="pc-meta"><span>2001&ndash;Present</span><span>Jackson, WY</span></div>
+        <div class="pc-bio">Co-founded NMI in 2001. 17+ years in payments/tech. Drove strategic direction, M&amp;A, new markets, enterprise client needs.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Former Executives</h2>
+    <div class="person-grid">
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Vijay Sondhi</div><div class="pc-title">Former CEO</div></div><span class="tag tag-yellow">2018&ndash;2025</span></div>
+        <div class="pc-meta"><span>Strategic advisor through end 2025</span></div>
+        <div class="pc-bio">MBA from Columbia Business School; BS CS from UBC. Grew NMI from 550M transactions / $45B to 5.8B transactions / $440B. Completed 5 acquisitions, grew merchant base 10x to 1M+.</div>
+        <div class="pc-prev"><strong>Prior:</strong> Three roles at Visa (head of corp strategy; GM of CyberSource &amp; Authorize.Net; head of innovation) &rarr; CFO for three PE/VC-backed companies &rarr; Oracle-Micros, OpenText, SAP</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Roy Banks</div><div class="pc-title">Former CEO</div></div><span class="tag tag-yellow">2014&ndash;2018</span></div>
+        <div class="pc-bio">20 years in high-tech, e-commerce, and payment processing. Led Authorize.Net from startup to $662M sale. U.S. Navy veteran (data processing technician).</div>
+        <div class="pc-prev"><strong>Prior:</strong> President of Authorize.Net &rarr; WordPerfect/Novell &rarr; U.S. Navy</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Jim McKenzie</div><div class="pc-title">Co-Founder &amp; Chairman</div></div><span class="tag tag-yellow">Founder</span></div>
+        <div class="pc-bio">Co-founded NMI in 2001. Served as original CEO. Continues as board member and investor/advisor.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Ted Cucci</div><div class="pc-title">Co-Founder</div></div><span class="tag tag-yellow">Founder</span></div>
+        <div class="pc-bio">Co-founded NMI; served as COO. Departed and became President/CEO/Board Chairman of Fluid Pay, LLC (competing gateway).</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Matt Schmidgall</div><div class="pc-title">Co-Founder &amp; CTO</div></div><span class="tag tag-yellow">Founder</span></div>
+        <div class="pc-bio">Original author of the NMI platform software that launched in 2001. Co-founder with technical oversight.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Jennifer Sherman</div><div class="pc-title">Former SVP of Product / Chief Product &amp; Experience Officer</div></div><span class="tag tag-yellow">2019&ndash;~2023</span></div>
+        <div class="pc-bio">20-year industry veteran. Stanford BS &amp; MS. Later became CPO at Unit4 (May 2025).</div>
+        <div class="pc-prev"><strong>Prior:</strong> Oracle, Aptean, NAVEX Global, Kibo Software/Commerce</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Leo Castro</div><div class="pc-title">Former CMO</div></div><span class="tag tag-yellow">Jan 2020&ndash;Mar 2021</span></div>
+        <div class="pc-bio">MBA from Northwestern Kellogg; BS ChemE from UC Berkeley. Founded Decisive Moment Marketing after NMI.</div>
+        <div class="pc-prev"><strong>Prior:</strong> Head of Marketing at Clover &rarr; Roles at PayPal &amp; BigCommerce</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Kim Norwesh</div><div class="pc-title">Former Chief People Officer</div></div><span class="tag tag-yellow">Jan 2021&ndash;~2023</span></div>
+        <div class="pc-bio">20+ years of leadership and talent-building. BS Engineering Management from US Military Academy; MSA from Central Michigan University.</div>
+        <div class="pc-prev"><strong>Prior:</strong> CHRO at 4C Insights (merged with MediaOcean) &rarr; Leadership at Baxter &amp; Takeda Pharmaceuticals</div>
+      </div>
+
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Lisa Puchalski</div><div class="pc-title">Former VP of Marketing</div></div><span class="tag tag-yellow">Pre-2019</span></div>
+        <div class="pc-bio">Now Director of Marketing at PayJunction.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Board of Directors</h2>
+    <div class="person-grid">
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Peter Christodoulo</div><div class="pc-title">Chairman of the Board</div></div><span class="tag tag-blue">Francisco Partners</span></div>
+        <div class="pc-bio">Partner at Francisco Partners. Also serves on boards of Drawbridge, Dynamo, Elite, Paradigm, SourceScrub, TS Imagine, and Verifone.</div>
+      </div>
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Nick Cayer</div><div class="pc-title">Board Member</div></div><span class="tag tag-blue">Great Hill Partners</span></div>
+        <div class="pc-bio">Partner at Great Hill Partners (joined 2006).</div>
+      </div>
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Byron Lichtenstein</div><div class="pc-title">Board Member</div></div><span class="tag tag-blue">Insight Partners</span></div>
+        <div class="pc-bio">Managing Director at Insight Partners.</div>
+      </div>
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">David Spiro</div><div class="pc-title">Board Member</div></div><span class="tag tag-blue">Insight Partners</span></div>
+        <div class="pc-bio">Principal at Insight Partners.</div>
+      </div>
+      <div class="person-card">
+        <div class="pc-header"><div><div class="pc-name">Jim McKenzie</div><div class="pc-title">Board Member</div></div><span class="tag tag-yellow">Founder</span></div>
+        <div class="pc-bio">Co-Founder of NMI. Investor and advisor.</div>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Former board members:</strong> Gene Yoon (Managing Partner, Bregal Sagemount &mdash; exited 2017) and Michael Kosty (Bregal Sagemount &mdash; exited 2017).
+    </div>
+  </section>
+</div>
+
+<!-- ==================== TIMELINE ==================== -->
+<div class="tab-content" id="tab-timeline">
+  <section>
+    <h2>Key Hires, Acquisitions &amp; Milestones</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-year">2001</div>
+        <div class="timeline-event">NMI Founded</div>
+        <div class="timeline-detail">Co-founded by Jim McKenzie, Ted Cucci, Matt Schmidgall, and Nick Starai in Schaumburg, IL. Built e-commerce payment gateways for real-time online transaction processing.</div>
+      </div>
+
+      <div class="timeline-item investment">
+        <div class="timeline-year">Sep 2013</div>
+        <div class="timeline-event">Bregal Sagemount Investment (~$200M valuation)</div>
+        <div class="timeline-detail">Bregal Sagemount acquires roughly half the company for ~$100M. Additional financing from Goldman Sachs Specialty Lending Group and TPG Specialty Lending.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">May 2014</div>
+        <div class="timeline-event">Great Hill Partners Investment + New CEO</div>
+        <div class="timeline-detail"><strong>Roy Banks</strong> hired as CEO and <strong>Kyle Pexton</strong> as CFO &mdash; both formerly of Authorize.Net and APT. Great Hill Partners makes growth equity investment.</div>
+      </div>
+
+      <div class="timeline-item investment">
+        <div class="timeline-year">Sep 2017</div>
+        <div class="timeline-event">Francisco Partners Acquires NMI</div>
+        <div class="timeline-detail">Francisco Partners acquires NMI. Bregal Sagemount exits. Great Hill Partners and Insight Partners remain.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Mar 2018</div>
+        <div class="timeline-event">Creditcall Acquired</div>
+        <div class="timeline-detail">Bristol, UK-based EMV/omnichannel provider. Adds card-present capabilities, 100+ device certifications, 165+ processor integrations combined. CEO Lars Pedersen joins.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">May 2018</div>
+        <div class="timeline-event">Vijay Sondhi Named CEO</div>
+        <div class="timeline-detail">Former Visa executive (ran CyberSource &amp; Authorize.Net businesses). Roy Banks departs. Sondhi leads NMI for 7 years through massive growth phase.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Apr 2019</div>
+        <div class="timeline-event">Executive Expansion Wave</div>
+        <div class="timeline-detail"><strong>Kate Hampton</strong> (VP Product &amp; GM UK), <strong>Jennifer Sherman</strong> (SVP Product), <strong>TJ Fund</strong> (SVP &amp; General Counsel) join NMI.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Oct 2019</div>
+        <div class="timeline-event">Matt Miller Named SVP Sales</div>
+        <div class="timeline-detail">19+ yrs tech/software experience. Previously VP of Sales at Datto (60+ person sales org). Joins executive committee.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Jan 2020</div>
+        <div class="timeline-event">Leo Castro Named CMO</div>
+        <div class="timeline-detail">Former Head of Marketing at Clover, roles at PayPal and BigCommerce. Departed Mar 2021.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Jul 2020</div>
+        <div class="timeline-event">Kyle Pexton Promoted to President</div>
+        <div class="timeline-detail">Elevated from CFO to President to lead commercial and business development efforts.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Jan 2021</div>
+        <div class="timeline-event">Kim Norwesh Named Chief People Officer</div>
+        <div class="timeline-detail">20+ years HR leadership. Previously CHRO at 4C Insights. Later departed ~2023.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Feb 2021</div>
+        <div class="timeline-event">USAePay Acquired</div>
+        <div class="timeline-detail">Glendale, CA-based gateway. Combined: $100B+ volume, 1.5B+ transactions. Ben Goretsky (co-founder) becomes SVP Strategic Alliances; Tim McEwen (CTO) becomes SVP Engineering.</div>
+      </div>
+
+      <div class="timeline-item investment">
+        <div class="timeline-year">Sep 2021</div>
+        <div class="timeline-event">Insight Partners Growth Investment</div>
+        <div class="timeline-detail">Values NMI at ~$1.55B (including debt) &mdash; approximately 4x the 2017 valuation. Joins Francisco Partners and Great Hill Partners.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Jan 2022</div>
+        <div class="timeline-event">IRIS CRM Acquired</div>
+        <div class="timeline-detail">Brooklyn, NY-based merchant CRM. ~60 employees join. Dimitri Akhrin (founder/president) stays on. 400K+ active merchants.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Apr 2022</div>
+        <div class="timeline-event">Peter Galvin Named CMO</div>
+        <div class="timeline-detail">20-year veteran. Former CMO at Entrust and Proofpoint.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Jun 2022</div>
+        <div class="timeline-event">Scott Hart Named CFO</div>
+        <div class="timeline-detail">CFA Charterholder; 20+ years finance leadership. Placed by Bespoke Partners.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Aug 2022</div>
+        <div class="timeline-event">Robert Hoblit Named CRO</div>
+        <div class="timeline-detail">Former CRO at DigiCert; McKinsey alum. Part of major 2022 C-suite build-out.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Mid-2022</div>
+        <div class="timeline-event">Phillip Goericke Joins as SVP Engineering</div>
+        <div class="timeline-detail">Former VP of Product Engineering at Alkami Technology. Would be promoted to CTO in Jan 2024.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Dec 2022</div>
+        <div class="timeline-event">Agreement Express (Payments Division) Acquired</div>
+        <div class="timeline-detail">Vancouver-based onboarding/underwriting. NMI acquires payments portion; Frontier Growth retains wealth management arm. Darryl Cumming joins.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Apr 2023</div>
+        <div class="timeline-event">Tiffany Johnson Named CPO</div>
+        <div class="timeline-detail">Former SVP Product at Green Dot. Multiple industry awards. Helped launch AppleCash, Uber Instant Pay.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Sep 2023</div>
+        <div class="timeline-event">Anovia Payments Acquired</div>
+        <div class="timeline-detail">Buyout/LBO. 201-500 employees. Schaumburg, IL-based.</div>
+      </div>
+
+      <div class="timeline-item acquisition">
+        <div class="timeline-year">Oct 2023</div>
+        <div class="timeline-event">Sphere Commercial Division Acquired</div>
+        <div class="timeline-detail">Irving, TX. Underwriting/risk mgmt capabilities. Tom Bannon (COO/Pres) joins as SVP Partner Monetization.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Jan 2024</div>
+        <div class="timeline-event">C-Suite Promotions</div>
+        <div class="timeline-detail"><strong>Phillip Goericke</strong> promoted to CTO. <strong>Casey Jameson</strong> named Chief Talent Officer.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Feb 2024</div>
+        <div class="timeline-event">NMI Payments Platform Launch</div>
+        <div class="timeline-detail">Comprehensive embedded payments solution for ISVs, ISOs, and payment professionals.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">May 2024</div>
+        <div class="timeline-event">Cape Town, South Africa Office Opens</div>
+        <div class="timeline-detail">Support operations expansion for 24/7 premium support coverage.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Nov 2024</div>
+        <div class="timeline-event">10 Billion Transactions Milestone</div>
+        <div class="timeline-detail">NMI surpasses 10 billion total transactions processed.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Sep 2025</div>
+        <div class="timeline-event">Steven Pinado Named CEO</div>
+        <div class="timeline-detail">~30 years fintech experience. Former Billtrust President (IPO &amp; sale). Vijay Sondhi transitions to strategic advisor.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Dec 2025</div>
+        <div class="timeline-event">NMI Business Capital Launched</div>
+        <div class="timeline-detail">Embedded lending via Parafin partnership and Celtic Bank. Available to 1M+ merchants. Caps landmark year of growth.</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ==================== LOCATIONS ==================== -->
+<div class="tab-content" id="tab-locations">
+  <section>
+    <h2>Office Locations</h2>
+    <p style="font-size:0.85rem;color:var(--fg-secondary);margin-bottom:16px">NMI operates as a <strong>remote-first company</strong> across 6 continents with ~640 employees. Uses Greenhouse ATS for recruiting.</p>
+    <div class="location-grid">
+      <div class="location-card">
+        <div class="loc-name">Schaumburg, Illinois (HQ)</div>
+        <div class="loc-addr">1450 American Lane, Suite 1200, Schaumburg, IL 60173</div>
+        <div class="loc-note">Corporate headquarters since founding</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Bristol, United Kingdom</div>
+        <div class="loc-addr">Merchants House North, Wapping Road, BS1 4RW (also: Programme, 4th Floor, All Saints' Street, BS1 2LZ)</div>
+        <div class="loc-note">Acquired via Creditcall (2018). UK &amp; European operations</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Glendale, California</div>
+        <div class="loc-addr">1833 S Victory Blvd, Glendale, CA 91201</div>
+        <div class="loc-note">Acquired via USAePay (2021)</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Lindon, Utah</div>
+        <div class="loc-addr">1971 W 700 N, Suite 200, Lindon, UT 84042</div>
+        <div class="loc-note">TJ Fund (former GC) was based here; Pleasant Grove area</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Brooklyn, New York</div>
+        <div class="loc-addr">413 86th Street, Mezzanine Floor, Brooklyn, NY 11209</div>
+        <div class="loc-note">From IRIS CRM acquisition (2022)</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">New York City</div>
+        <div class="loc-addr">WeWork Penn Station, Midtown West</div>
+        <div class="loc-note">East Coast presence</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Irving, Texas</div>
+        <div class="loc-addr">Address not confirmed</div>
+        <div class="loc-note">Retained from Sphere acquisition (2023)</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Cape Town, South Africa</div>
+        <div class="loc-addr">Opened May 2024</div>
+        <div class="loc-note">Support operations for 24/7 premium coverage</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Roselle, Illinois</div>
+        <div class="loc-addr">Network Merchants LLC registered address</div>
+        <div class="loc-note">Matt Miller (SVP Sales) based here. BBB profile address.</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Canada</div>
+        <div class="loc-addr">Remote positions offered</div>
+        <div class="loc-note">Agreement Express team (Vancouver)</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-name">Australia</div>
+        <div class="loc-addr">Referenced as office location</div>
+        <div class="loc-note">Part of global expansion</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== DEPARTMENTS ==================== -->
+<div class="tab-content" id="tab-departments">
+  <section>
+    <h2>Identified Departments &amp; Teams</h2>
+    <div class="dept-list">
+      <div class="dept-item"><div class="dept-dot"></div>Product Engineering</div>
+      <div class="dept-item"><div class="dept-dot"></div>Product Management</div>
+      <div class="dept-item"><div class="dept-dot"></div>Product Design</div>
+      <div class="dept-item"><div class="dept-dot"></div>AI &amp; Automation</div>
+      <div class="dept-item"><div class="dept-dot"></div>Site Reliability Engineering (SRE)</div>
+      <div class="dept-item"><div class="dept-dot"></div>Sales (Global)</div>
+      <div class="dept-item"><div class="dept-dot"></div>Sales (UK &amp; Europe)</div>
+      <div class="dept-item"><div class="dept-dot"></div>Business Development</div>
+      <div class="dept-item"><div class="dept-dot"></div>Strategic Alliances</div>
+      <div class="dept-item"><div class="dept-dot"></div>Partner Launch / Implementation</div>
+      <div class="dept-item"><div class="dept-dot"></div>Partner Success</div>
+      <div class="dept-item"><div class="dept-dot"></div>Partner Monetization</div>
+      <div class="dept-item"><div class="dept-dot"></div>Marketing (Corporate &amp; Demand Gen)</div>
+      <div class="dept-item"><div class="dept-dot"></div>Marketing Operations &amp; Data Analytics</div>
+      <div class="dept-item"><div class="dept-dot"></div>Product Marketing</div>
+      <div class="dept-item"><div class="dept-dot"></div>Web Marketing</div>
+      <div class="dept-item"><div class="dept-dot"></div>Finance &amp; FP&amp;A</div>
+      <div class="dept-item"><div class="dept-dot"></div>Legal / General Counsel</div>
+      <div class="dept-item"><div class="dept-dot"></div>People &amp; Culture / Talent</div>
+      <div class="dept-item"><div class="dept-dot"></div>Revenue Operations</div>
+      <div class="dept-item"><div class="dept-dot"></div>Compliance &amp; InfoSec</div>
+      <div class="dept-item"><div class="dept-dot"></div>Risk &amp; Underwriting</div>
+      <div class="dept-item"><div class="dept-dot"></div>Integration Support</div>
+      <div class="dept-item"><div class="dept-dot"></div>Customer Support (incl. Cape Town)</div>
+      <div class="dept-item"><div class="dept-dot"></div>Strategy &amp; Corporate Development</div>
+      <div class="dept-item"><div class="dept-dot"></div>IRIS CRM (Division)</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Current Open Positions (as of early 2026)</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Role</th><th>Salary Range</th><th>Location</th></tr></thead>
+        <tbody>
+          <tr><td>Director of Strategic Partnerships (Payments/Fintech)</td><td>$170K&ndash;$190K</td><td>&mdash;</td></tr>
+          <tr><td>Director, Marketing Operations &amp; Data Analytics</td><td>$130K&ndash;$170K</td><td>&mdash;</td></tr>
+          <tr><td>Manager of Software Engineering</td><td>$140K&ndash;$182K</td><td>Remote</td></tr>
+          <tr><td>Senior Cloud Engineer</td><td>$125K&ndash;$160K</td><td>Remote</td></tr>
+          <tr><td>Staff Software Engineer</td><td>$120K&ndash;$160K</td><td>New York, NY</td></tr>
+          <tr><td>Integrated Marketing Manager (SaaS/ISVs)</td><td>$100K&ndash;$125K</td><td>&mdash;</td></tr>
+          <tr><td>Senior Product Manager (Billing)</td><td>$125K&ndash;$145K</td><td>Remote</td></tr>
+          <tr><td>Senior Product Manager (CRM Extensions &amp; Gateway Portals)</td><td>$125K&ndash;$145K</td><td>Remote</td></tr>
+          <tr><td>Senior Product Manager (Processing Optimization)</td><td>$125K&ndash;$145K</td><td>Remote</td></tr>
+          <tr><td>Revenue Operations Manager, Business Applications</td><td>$90K&ndash;$115K</td><td>Remote</td></tr>
+          <tr><td>Channel Account Manager (Fintech/Payments)</td><td>&mdash;</td><td>Schaumburg, IL</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Industry Recognition &amp; Committee Roles</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Person</th><th>Award / Role</th><th>Year</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tiffany Johnson</strong></td><td>Products That Count CPO Award</td><td>2025</td></tr>
+          <tr><td><strong>Tiffany Johnson</strong></td><td>Most Influential Women in Fintech (American Banker)</td><td>2024</td></tr>
+          <tr><td><strong>Tiffany Johnson</strong></td><td>ETA Forty Under 40</td><td>2024</td></tr>
+          <tr><td><strong>Tiffany Johnson</strong></td><td>Most Influential Women in Payments (American Banker)</td><td>2022</td></tr>
+          <tr><td><strong>Rob Fox</strong></td><td>ETA Top Payments Sales Professional (Top 50)</td><td>2024</td></tr>
+          <tr><td><strong>Rich Swiderski</strong></td><td>ETA Top Payments Sales Professional; Sales Leader of the Year 2020-22</td><td>2024</td></tr>
+          <tr><td><strong>Naomi Mastera</strong></td><td>ETA Payment Sales &amp; Strategy Committee Chair</td><td>2025</td></tr>
+          <tr><td><strong>Ivan Szabo</strong></td><td>ETA Mobile Committee Lead; Transact 2026 speaker reviewer</td><td>2025</td></tr>
+          <tr><td><strong>Steven Madow</strong></td><td>ETA ISV Committee member</td><td>2024</td></tr>
+          <tr><td><strong>Nigel Jewell</strong></td><td>ETA PayFac Committee member</td><td>2024</td></tr>
+          <tr><td><strong>Danielle Betters</strong></td><td>ETA PayFac Committee member</td><td>2024</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Conference &amp; Event Presence</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Event</th><th>Year</th><th>NMI Presence</th></tr></thead>
+        <tbody>
+          <tr><td>ETA Transact (Las Vegas)</td><td>2025</td><td>Booth #509; Tiffany Johnson presented; partner happy hour</td></tr>
+          <tr><td>ETA Transact</td><td>2024</td><td>Exhibited (dedicated landing page)</td></tr>
+          <tr><td>ETA Transact (Atlanta)</td><td>2026</td><td>Ivan Szabo as speaker reviewer</td></tr>
+          <tr><td>SaaStr</td><td>2025</td><td>Exhibited</td></tr>
+          <tr><td>Retail Now</td><td>2025</td><td>Exhibited</td></tr>
+          <tr><td>MWAA (Midwest Acquirers Assoc.)</td><td>2025</td><td>Exhibited</td></tr>
+          <tr><td>IPC Conference (Manchester, UK)</td><td>2025</td><td>Exhibited</td></tr>
+          <tr><td>Transport Ticketing Global (London)</td><td>2026</td><td>Exhibited</td></tr>
+          <tr><td>Pay360 (Europe)</td><td>2026</td><td>Exhibited</td></tr>
+          <tr><td>Retail Technology Show (London)</td><td>2026</td><td>Exhibited</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== GLASSDOOR ==================== -->
+<div class="tab-content" id="tab-glassdoor">
+  <section>
+    <h2>Glassdoor Employer Profile</h2>
+    <p style="font-size:0.85rem;color:var(--fg-secondary);margin-bottom:20px">Based on ~95 reviews. Overall rating: <strong>3.5&ndash;3.8 / 5</strong>. 63&ndash;73% recommend to a friend. 65% positive business outlook.</p>
+
+    <div style="max-width:440px;margin-bottom:24px">
+      <div class="glassdoor-bar"><span class="gb-label">Work-Life Balance</span><div class="gb-track"><div class="gb-fill" style="width:76%"></div></div><span class="gb-val">3.8</span></div>
+      <div class="glassdoor-bar"><span class="gb-label">Culture &amp; Values</span><div class="gb-track"><div class="gb-fill" style="width:76%"></div></div><span class="gb-val">3.8</span></div>
+      <div class="glassdoor-bar"><span class="gb-label">Career Opportunities</span><div class="gb-track"><div class="gb-fill" style="width:74%"></div></div><span class="gb-val">3.7</span></div>
+      <div class="glassdoor-bar"><span class="gb-label">Compensation &amp; Benefits</span><div class="gb-track"><div class="gb-fill" style="width:64%"></div></div><span class="gb-val">3.2</span></div>
+    </div>
+
+    <h3>Common Positive Themes</h3>
+    <ul style="font-size:0.85rem;color:var(--fg-secondary);padding-left:20px;margin-bottom:20px">
+      <li>Great people and collaborative peers</li>
+      <li>Remote-first culture is highly valued</li>
+      <li>Company promotes from within</li>
+      <li>Exciting growth trajectory and interesting problems</li>
+      <li>Good work-life balance</li>
+    </ul>
+
+    <h3>Common Negative Themes</h3>
+    <ul style="font-size:0.85rem;color:var(--fg-secondary);padding-left:20px;margin-bottom:20px">
+      <li>Cross-department communication is weak / departments are siloed</li>
+      <li>Below-market compensation (comp rating declined 8% in 12 months)</li>
+      <li>Growing pains &mdash; not enough people in certain departments</li>
+      <li>Limited room for promotion despite growth</li>
+      <li>Some reviews (2024-25) allege management issues under prior CEO</li>
+      <li>Unequal pay internally and below industry standards</li>
+    </ul>
+
+    <h3>Salary Benchmarks (138 reported salaries)</h3>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>Role</th><th>Approx. Annual Salary</th></tr></thead>
+        <tbody>
+          <tr><td>Customer Service Representative</td><td>~$49K</td></tr>
+          <tr><td>Software Developer</td><td>~$120K (range $95K&ndash;$155K)</td></tr>
+          <tr><td>SVP Engineering</td><td>~$295K</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll('.nav-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      try { localStorage.setItem('nmi-tab', btn.dataset.tab); } catch(e) {}
+    });
+  });
+  try {
+    const saved = localStorage.getItem('nmi-tab');
+    if (saved) {
+      const btn = document.querySelector(`[data-tab="${saved}"]`);
+      if (btn) btn.click();
+    }
+  } catch(e) {}
+</script>
